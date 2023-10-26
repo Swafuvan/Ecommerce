@@ -1,0 +1,342 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Colours Pardha</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/images/Colours logo.png">
+    <!-- Template CSS -->
+    <link href="/assets/adminAsset/css/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+    <aside class="navbar-aside" id="offcanvas_aside">
+        <div class="aside-top">
+            <a href="index.html" class="brand-wrap">
+                <img src="/images/Colours (1).small.png" class="logo" alt="Evara Dashboard">
+            </a>
+            <div>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i>
+                </button>
+            </div>
+        </div>
+        <nav>
+            <ul class="menu-aside">
+                <li class="menu-item">
+                    <a class="menu-link" href="/admin"> <i class="icon material-icons md-home"></i>
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/product"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Products</span>
+                    </a>
+
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/usermanagement"> <i
+                            class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Usermanagement</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/orders"> <i class="icon material-icons md-store"></i>
+                        <span class="text">Orders</span>
+                    </a>
+                </li>
+                <li class="menu-item active">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">Category</span>
+                    </a>
+                </li>
+        </nav>
+    </aside>
+    <main class="main-wrap">
+        <header class="main-header navbar">
+            <div class="col-search">
+                <form class="searchform">
+                    <div class="input-group">
+                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
+                        <button class="btn btn-light bg" type="button"> <i
+                                class="material-icons md-search"></i></button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-nav">
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
+                        class="material-icons md-apps"></i> </button>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon" href="#">
+                            <i class="material-icons md-notifications animation-shake"></i>
+                            <span class="badge rounded-pill">3</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="requestfullscreen nav-link btn-icon"><i
+                                class="material-icons md-cast"></i></a>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage"
+                            aria-expanded="false"><i class="material-icons md-public"></i></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                            <a class="dropdown-item text-brand" href="#"><img
+                                    src="assets/adminAsset/imgs/theme/flag-us.png" alt="English">English</a>
+                        </div>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount"
+                            aria-expanded="false"> <img class="img-xs rounded-circle"
+                                src="assets/adminAsset/imgs/people/avatar2.jpg" alt="User"></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                            <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit
+                                Profile</a>
+                            <a class="dropdown-item text-danger" href="/admin/logout"><i
+                                    class="material-icons md-exit_to_app"></i>Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Categories </h2>
+                    <p>Add, edit or delete a category</p>
+                </div>
+                <div>
+                    <input type="text" placeholder="Search Categories" class="form-control bg-white">
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <form action="/admin/category" method="post">
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Name</label>
+                                    <input type="text" name="Name" value="<%= category.Name %>" placeholder="Type here"
+                                        class="form-control" id="product_name" />
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">category</label>
+                                    <select name="category" class="form-select">
+                                        <option value="women<">women</option>
+                                        <option value="kids">kids</option>
+                                        <option value="both">Both</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Description</label>
+                                    <textarea placeholder="Type here" name="description"
+                                        class="form-control"></textarea>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="product_slug" class="form-label">choose</label>
+                                    <select name="publish" class="form-select">
+                                        <option value="true">publish</option>
+                                        <option value="false">Unpublish</option>
+
+                                    </select>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">Create category</button>
+                                </div>
+                            </form>
+                            <div class="mb-4">
+                                <ul>
+                                    <p>Existing categories</p>
+                                    <% category.forEach((categories)=>{ %>
+                                        <li>
+                                            <%= categories.Name %>
+                                        </li>
+                                        <% }) %>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-9">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Order</th>
+                                            <th>Images</th>
+                                            <th>Name</th>
+                                            <th>Category</th>
+                                            <th>Description</th>
+                                            <th class="text-end">Featured</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% let slno=1 %>
+                                            <% product.forEach((products)=>{ %>
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="" />
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <%= slno %>
+                                                    </td>
+                                                    <td> <img class="img-sm img-thumbnail"
+                                                            src="/images/<%=products.coverImages%>" alt=""></td>
+                                                    <td><b>
+                                                            <%= products.Name %>
+                                                        </b></td>
+                                                    <td>
+                                                        <%= products.category %>
+                                                    </td>
+                                                    <td>
+                                                        <%= products.description %>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <div class="dropdown">
+                                                            <a href="#" data-bs-toggle="dropdown"
+                                                                class="btn btn-light rounded btn-sm font-sm"> <i
+                                                                    class="material-icons md-more_horiz"></i> </a>
+                                                            <div class="dropdown-menu">
+
+                                                                <a class="dropdown-item"
+                                                                    onclick="publish('<%=products._id %>','<%= products.publish%>')"
+                                                                    id="publishor" href="#">
+                                                                    <%= (products.publish===true)
+                                                                        ?'Unpublish':'publish'; %>
+                                                                </a>
+                                                                <a class="dropdown-item text-danger edit-category-button"
+                                                                    href='#' data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModal">Editcategory </a>
+
+
+                                                            </div>
+                                                        </div> <!-- dropdown //end -->
+                                                    </td>
+
+
+
+                                                    <!-- Modal -->
+
+
+
+                                                </tr>
+                                                <% slno++; %>
+                                                    <% }) %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div> <!-- .col// -->
+                    </div> <!-- .row // -->
+                </div> <!-- card body .// -->
+            </div> <!-- card .// -->
+        </section> <!-- content-main end// -->
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                        document.write(new Date().getFullYear())
+                    </script> ©, Evara - HTML Ecommerce Template .
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <% category.forEach((datas)=>{ %>
+        <div class="modal fade" id="exampleModal<%= category._id %>" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Category edit</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+
+                        <form action="/admin/editcategory" method="post">
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">Name</label>
+                                <input type="text" name="Name" value="<%= datas.Name %>" class="form-control"
+                                    id="product_name" />
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">category</label>
+                                <select name="category" class="form-select">
+                                    <option value="women<">women</option>
+                                    <option value="kids">kids</option>
+                                    <option value="both">Both</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Description</label>
+                                <input placeholder="Type here" value="<%= datas.description %>" name="description"
+                                    class="form-control"></input>
+                            </div>
+                            <div class="mb-4">
+                                <label for="product_slug" class="form-label">choose</label>
+                                <select name="publish" class="form-select">
+                                    <option value="true">publish</option>
+                                    <option value="false">Unpublish</option>
+                                </select>
+
+                        </form>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% }) %>
+
+
+
+            <script>
+                async function publish(dataid) {
+                    if (confirm('do you want to publish/unpublish')) {
+                        let Detail = await fetch('/admin/publishcategory', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(dataid)
+                        })
+                        window.location.reload()
+                    }
+                }
+            </script>
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+            <script src="/assets/adminAsset/js/vendors/jquery-3.6.0.min.js"></script>
+            <script src="/assets/adminAsset/js/vendors/bootstrap.bundle.min.js"></script>
+            <script src="/assets/adminAsset/js/vendors/select2.min.js"></script>
+            <script src="/assets/adminAsset/js/vendors/perfect-scrollbar.js"></script>
+            <script src="/assets/adminAsset/js/vendors/jquery.fullscreen.min.js"></script>
+            <!-- Main Script -->
+            <script src="/assets/adminAsset/js/main.js" type="text/javascript"></script>
+</body>
+
+</html>
