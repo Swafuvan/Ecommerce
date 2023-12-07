@@ -1,0 +1,153 @@
+ <%- include('adminHeader') %>
+
+ <section class="content-main">
+    <div class="row">
+        <form action="/admin/addCoupon" method="post" onsubmit="return validation()">
+            <div class="col-9">
+                <div class="content-header">
+                    <h2 class="content-title">Add New Coupon</h2>
+                    <div>
+                        <button type="submit" onclick=""
+                            class="btn btn-light rounded font-sm mr-5  hover-up">Unpublish</button>
+                        <button type="submit" onclick=""
+                            class="btn btn-md rounded font-sm  hover-up">Publish</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label for="CouponTitle" class="form-label">Coupon Name</label>
+                            <input type="text" placeholder="Type here" name="Name" class="form-control" id="Name">
+                            <span id="couponerr" style="color: red;"></span>
+                        </div>
+                        
+                       
+                    </div>
+                </div> 
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div>
+                            <label class="form-label" for="description">Description</label>
+                            <textarea placeholder="Type here" id="description" name="description"
+                                class="form-control" rows="4"></textarea>
+                            <span id="descerr" style="color: red;"></span>
+                        </div>
+                    </div>
+                </div> 
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div>
+                            <label class="form-label" for="valid">Starting Price</label>
+                            <input type="text" placeholder="Valid Price" name="valid" class="form-control" id="valid">
+                            <span id="validerr" style="color: red;"></span>
+                        </div>
+                    </div>
+                </div> 
+                
+                
+            </div>
+            <div class="col-xxl-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label class="form-label" for="expiryDate">expiryDate</label>
+                            <input type="date" id="ExpiryDate" name="ExpiryDate" placeholder="Type here" class="form-control">
+                            <span id="priceerr" style="color: red;"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label" for="offerType">Offer Type</label>
+                            <select name="offerType" id="offerType" class="form-select" onchange="showOffer()">
+                                <option value="none">None</option>
+                                <option value="percentage">Percentage</option>
+                                <option value="Prices">Price</option>
+                            </select>
+                        </div>
+                        <div id="percentage" style="display: none;">
+                            <div class="form-group mb-4" id="percentage1">
+                                <label for="minperce" class="form-label">Minimum price</label>
+                                <input type="text" name="minimum" class="form-control" id="minimum"
+                                    placeholder="Minimum Percentage">
+                                <span id="MinimumErr" style="color: red;"></span>
+                            </div>
+                            <div class="form-group mb-4" id="percentage2" >
+                                <label for="Maxperce" class="form-label">Maximum price</label>
+                                <input type="text" name="maximum" class="form-control" id="maximum"
+                                    placeholder="Maximum Percentage">
+                                <span id="MaximumErr" style="color: red;"></span>
+                            </div>
+                            <div class="form-group mb-4" id="percentage3" >
+                                <label for="percentageTill" class="form-label">Till </label>
+                                <input type="text" name="percentageTill" class="form-control" id="percentageTill"
+                                    placeholder="percentageTill ">
+                                <span id="MaximumErr" style="color: red;"></span>
+                            </div>
+                            <div class="form-group mb-4" id="percentage4" >
+                                <label for="discount" class="form-label">Percentage </label>
+                                <input type="text" name="discount" class="form-control" id="discount"
+                                    placeholder="MaximumPrice">
+                                <span id="percentageErr" style="color: red;"></span>
+                            </div>
+                        </div>
+                        <div id="Prices" style="display: none;">
+                            <div class="form-group mb-4" id="Prices1" >
+                                <label for="amount" class="form-label">Price</label>
+                                <input type="text" name="amount" class="form-control" id="amount"
+                                    placeholder="Price">
+                                <span id="priceErr" style="color: red;"></span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div> <!-- card end// -->
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    function showOffer() {
+        
+        const data = document.getElementById('offerType').value
+        if (data === 'percentage') {
+            document.getElementById('Prices').style.display = 'none'
+            document.getElementById('percentage').style.display = 'inline' 
+        } else if(data === 'Prices'){
+            document.getElementById('percentage').style.display = 'none'
+            document.getElementById('Prices').style.display = 'inline'
+        } else{
+            document.getElementById('percentage').style.display = 'none'
+            document.getElementById('Prices').style.display = 'none'
+        }
+    }
+
+    function validation(){
+        let check = true
+                const nameInput = document.getElementById('Name').value
+                const descinput = document.getElementById('description').value
+                const priceinput = document.getElementById('price').value
+                const qntyinput = document.getElementById('valid').value
+                const offerinput = document.getElementById('productOffer').value
+                const offerTypeinput = document.getElementById('offerType').value
+
+                const nameMessage = document.getElementById('couponerr');
+                const descmessage = document.getElementById('descerr');
+                const pricemessage = document.getElementById('priceerr');
+                const qntymessage = document.getElementById('valid');
+                const offermessage = document.getElementById('offererr');
+                
+
+                nameMessage.textContent = '';
+                colormessage.textContent = '';
+                sizemessage.textContent = '';
+                formessage.textContent = '';
+                descmessage.textContent = '';
+                pricemessage.textContent = '';
+                qntymessage.textContent = '';
+                offermessage.textContent = '';
+    }
+   
+</script>
+
+ <%- include('adminFooter') %>

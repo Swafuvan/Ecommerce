@@ -4,10 +4,8 @@ const storage = multer.diskStorage({
     destination: (req, File, cb) => {
         cb(null, 'public/productimage/')
     },
-    filename: (req, File, cb) => {
-        let filename = Date.now() + Math.floor(Math.random() * 1000 ** 4) + ".png"
-        cb(null, filename);
-        req.body.coverImages = filename
+    filename: (req, File, cb) => { 
+        cb(null, File.originalname);
     }
 })
 
@@ -17,10 +15,12 @@ const multistorage = multer.diskStorage({
     },
     filename: (req, File, cb) => {
         let filesname = Date.now() + Math.floor(Math.random() * 1000 ** 4) + ".png"+""
-        if(!req.session.productname) {
-            req.session.productname=[]
+        if(!req.session.productImage) {
+            req.session.productImage = []
         }
-        req.session.productname.push(filesname)
+        req.session.productImage.push(filesname)
+        File.filename = filesname
+      
         cb(null, filesname);
     }
 })

@@ -18,7 +18,6 @@
 
 function validate(){
 
-    return true
 }
 
 function emailvalidation(){
@@ -28,4 +27,7 @@ function emailvalidation(){
 function passwordvalidation(){
     
 }
+
+
+
 

@@ -1,0 +1,86 @@
+
+<%- include('adminHeader') %>
+
+<section class="content-main">
+    <div class="content-header">
+
+        <div>
+            <h2 class="content-title card-title">Banner Management</h2>
+            <p>All Banner details are listed</p>
+        </div>
+        <div>
+            <a href="/admin/addBanner" class="btn btn-primary btn-sm rounded">New Banner</a>
+        </div>
+    </div>
+    <div>
+        <table class="table ">
+            <thead> 
+                <th> image</th>
+                <th> Name</th>
+                <th> description</th>
+                <th>expiryDate </th>
+                <th>Publish </th>
+                <th> Features</th>
+            </thead>
+        </table>
+    </div>
+        <div class="card mb-1">
+            <div class="card-body">
+                
+                <article class="itemlist">
+
+                    <div class="row align-items-center">
+                        <div class="col col-check flex-grow-0">
+                            <h4>Name</h4>
+                        </div>
+                        <div class="col-lg-4 col-sm-4 col-8  ">                                
+                                <div class="info">
+                                    <h6 class="mb-0">
+                                        type </h6>
+                                </div>
+                        </div>
+                        <div class="col-lg-2 col-sm-2 col-4 col-price"> <span>
+                           date
+                        </span>
+                     </div>
+                        <div class="col-lg-2 col-sm-2 col-4 col-status">
+                            <span class="badge rounded-pill alert-success">
+                                
+                            </span>
+                        </div>
+                       
+                        <div class="col-lg-2 col-sm-2 col-4 col-action text-end d-flex gap-2">
+                            <button  class="btn btn-sm font-sm btn-light rounded" id="couponitems_"
+                                onclick="bannerPublish()">
+                                <h5>publish</h5>
+                            </button>
+                        </div>
+                    </div> <!-- row .// -->
+
+                </article> <!-- itemlist  .// -->
+               
+
+            </div> <!-- card-body end// -->
+        </div> <!-- card end// -->
+
+        <!-- Modal -->
+
+
+        <!-- Add more information about the product here -->
+
+            <div class="pagination-area mt-30 mb-50">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-start">
+                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                        <li class="page-item"><a class="page-link" href="#">02</a></li>
+                        <li class="page-item"><a class="page-link" href="#">03</a></li>
+                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                        <li class="page-item"><a class="page-link" href="#">23</a></li>
+                        <li class="page-item"><a class="page-link" href="#"><i
+                                    class="material-icons md-chevron_right"></i></a></li>
+                    </ul>
+                </nav>
+            </div>
+</section>
+
+<%- include('adminFooter') %>

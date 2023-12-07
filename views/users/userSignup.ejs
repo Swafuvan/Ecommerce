@@ -1,23 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <title>Colours Pardha Palace</title>
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:title" content="">
-    <meta property="og:type" content="">
-    <meta property="og:url" content="">
-    <meta property="og:image" content="">
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/images/Colours logo.png">
-    <!-- Template CSS -->
-    <link rel="stylesheet" href="/assets/userAsset/css/main.css?v=3.4">
-
-    <!-- font awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<%- include('header') %>
 
     <style>
         .password-input {
@@ -33,110 +14,9 @@
         }
     </style>
 
-</head>
 
-<body>
-    <header class="header-area header-style-5">
-        <div class="header-top header-top-ptb-1 d-none d-lg-block">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-xl-3 col-lg-4">
-                        <div class="header-info">
-                            <ul>
-                                <li><i class="fi-rs-smartphone"></i> <a href="#">(+91)-7510112675 </a></li>
-                                <li><i class="fi-rs-marker"></i><a href="page-contact.html">Our location</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-4">
-                        <div class="text-center">
-                            <div id="news-flash" class="d-inline-block">
-                                <ul>
-                                    <li>Get great Abaya up to 50% off <a href="shop-grid-right.html">View details</a>
-                                    </li>
-                                    <li>Supper Value Deals - Save more with coupons</li>
-                                    <li>Trendy Kafthan and Abaya, save up 35% off today <a
-                                            href="shop-grid-right.html">Shop now</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-4">
-                        <div class="header-info header-info-right">
-                            <ul>
-                                <li>
-                                    <a class="language-dropdown-active" href="#"> <i class="fi-rs-world"></i> English
-                                    </a>
-                                </li>
-                                <li><i class="fi-rs-user"></i><a href="/Login">Log in</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="header-bottom sticky-bar sticky-white-bg">
-            <div class="container">
-                <div class="header-wrap header-space-between position-relative">
-                    <div class="logo logo-width-1">
-                        <a href="index.html"><img src="/images/Colours (1).small.png" alt="logo"></a>
-                    </div>
-                    <div
-                        class="main-menu main-menu-grow main-menu-padding-1 main-menu-lh-1 main-menu-mrg-1 hm3-menu-padding d-none d-lg-block hover-boder">
-                        <nav>
-                            <ul>
-                                <li><a class="active" href="/">Home </a>
-                                </li>
-                                <li><a href="shop-grid-right.html">Shop </a>
 
-                                </li>
-                                <li class="position-static"><a href="#">About Us</a>
-
-                                </li>
-                                <li>
-                                    <a href="page-contact.html">Contact</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="header-action-right">
-                        <div class="search-style-2">
-                            <form action="#">
-                                <input type="text" placeholder="Search for items…">
-                                <button class="p-2" type="submit"><i class="fi-rs-search"></i></button>
-                            </form>
-                        </div>
-                        <div class="header-action-2">
-                            <div class="header-action-icon-2">
-                                <a href="shop-wishlist.html">
-                                    <img class="svgInject" alt="Evara"
-                                        src="/assets/userAsset/imgs/theme/icons/icon-heart.svg">
-                                    <span class="pro-count blue">4</span>
-                                </a>
-                            </div>
-                            <div class="header-action-icon-2">
-                                <a class="mini-cart-icon" href="shop-cart.html">
-                                    <img alt="Colours Pardha Palace"
-                                        src="/assets/userAsset/imgs/theme/icons/icon-cart.svg">
-                                    <span class="pro-count blue">2</span>
-                                </a>
-
-                            </div>
-                            <div class="header-action-icon d-block d-lg-none">
-                                <div class="burger-icon">
-                                    <span class="burger-icon-top"></span>
-                                    <span class="burger-icon-mid"></span>
-                                    <span class="burger-icon-bottom"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <div class="col-lg-6 ml-200 mb-20">
+    <div class="col-lg-6 ml-200 mb-5">
         <div class="login_wrap widget-taber-content p-30 background-white border-radius-5">
             <div class="padding_eight_all bg-white">
                 <div class="heading_s1">
@@ -146,7 +26,7 @@
                     Your personal data will be used to support your experience throughout this website, to manage access
                     to your account, and for other purposes described in our privacy policy
                 </p>
-                <form method="post" id="signupForm" action="/signup" onsubmit="return validateForm()">
+                <form method="post" id="signupForm" action="/signup" >
                     <div class="form-group">
                         <span style="color: red;" id="nameerr"></span>
                         <input type="text" id="username" name="username" placeholder="Username">
@@ -184,8 +64,11 @@
                                 <div class="modal-body">
                                     <input type="text" name="otp">
                                 </div>
+                                <div class="text-center" style="color: red;" id="minutediv">
+                                    0<span id="minute">2</span>: <span id="seconds">59</span>
+                                </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-primary">Confirm OTP</button>
                                 </div>
                             </div>
@@ -201,121 +84,132 @@
         </div>
     </div>
 
+    <%- include('footer') %>
 
+        <script>
+            function Maincounter() {
+                let countminute = document.getElementById('minute')
+                let countsecond = document.getElementById('seconds')
+                let minute = 2
+                let count = 59
+                let maininterval = setInterval(() => {
+                    count -= 1
+                    if (count < 10 && count > 0) {
+                        count = '0' + count
+                    }
+                    countsecond.innerHTML = count
+                    if (count === 0) {
+                        count = 59
+                        minute -= 1
+                        countminute.innerHTML = minute
+                    }
+                    if (minute === -1) {
+                        clearInterval(maininterval)
+                        document.getElementById('minutediv').innerHTML = ' Otp Expired'
+                        
+                    }
+                }, 1000);
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            }
+        
 
+            function OTP() {
+                let valid = true
+                const nameInput = document.getElementById('username').value
+                const emailInput = document.getElementById('email').value
+                const phoneInput = document.getElementById('phone').value
+                const passwordInput = document.getElementById('password').value
+                const confirminput = document.getElementById('confirmpassword').value
 
-
-    <script src="/assets/userAsset/js/vendor/modernizr-3.6.0.min.js"></script>
-    <script src="/assets/userAsset/js/vendor/jquery-3.6.0.min.js"></script>
-    <script src="/assets/userAsset/js/vendor/jquery-migrate-3.3.0.min.js"></script>
-    <script src="/assets/userAsset/js/vendor/bootstrap.bundle.min.js"></script>
-    <script src="/assets/userAsset/js/plugins/slick.js"></script>
-    <script src="/assets/userAsset/js/plugins/jquery.syotimer.min.js"></script>
-    <script src="/assets/userAsset/js/plugins/wow.js"></script>
-    <script src="/assets/userAsset/js/plugins/jquery-ui.js"></script>
-    <script src="/assets/userAsset/js/plugins/perfect-scrollbar.js"></script>
-    <script src="/assets/userAsset/js/plugins/magnific-popup.js"></script>
-    <script src="/assets/userAsset/js/plugins/select2.min.js"></script>
-    <script src="/assets/userAsset/js/plugins/waypoints.js"></script>
-    <script src="/assets/userAsset/js/plugins/counterup.js"></script>
-    <script src="/assets/userAsset/js/plugins/jquery.countdown.min.js"></script>
-    <script src="/assets/userAsset/js/plugins/images-loaded.js"></script>
-    <script src="/assets/userAsset/js/plugins/isotope.js"></script>
-    <script src="/assets/userAsset/js/plugins/scrollup.js"></script>
-    <script src="/assets/userAsset/js/plugins/jquery.vticker-min.js"></script>
-    <script src="/assets/userAsset/js/plugins/jquery.theia.sticky.js"></script>
-    <!-- Template  JS -->
-    <script src="/assets/userAsset/js/main.js?v=3.4"></script>
-    <script>
-
-        function OTP() {
-            let valid = true
-            const nameInput = document.getElementById('username').value
-            const emailInput = document.getElementById('email').value
-            const phoneInput = document.getElementById('phone').value
-            const passwordInput = document.getElementById('password').value
-            const confirminput = document.getElementById('confirmpassword').value
-
-            // Get all validation messages
-            const nameMessage = document.getElementById('nameerr');
-            const emailMessage = document.getElementById('emailerr');
-            const phoneMessage = document.getElementById('phoneerr');
-            const passwordMessage = document.getElementById('passworderr');
-            const confirmdMessage = document.getElementById('confirmerr');
+                // Get all validation messages
+                const nameMessage = document.getElementById('nameerr');
+                const emailMessage = document.getElementById('emailerr');
+                const phoneMessage = document.getElementById('phoneerr');
+                const passwordMessage = document.getElementById('passworderr');
+                const confirmdMessage = document.getElementById('confirmerr');
 
 
 
-            // Clear all validation messages
-            nameMessage.textContent = '';
-            emailMessage.textContent = '';
-            phoneMessage.textContent = '';
-            passwordMessage.textContent = '';
-            confirmdMessage.textContent = '';
-
-            // Validate the first name field
-            if (nameInput.trim() === '') {
-                nameMessage.textContent = 'Please enter your username.';
-                valid = false;
-            } else if (/^\d+$/.test(nameInput.trim())) {
-                nameMessage.textContent = 'Please enter a valid user name without numbers.';
-                valid = false;
-            } else {
-                // The input is not empty and doesn't contain numbers, clear any previous error message.
+                // Clear all validation messages
                 nameMessage.textContent = '';
-            }
+                emailMessage.textContent = '';
+                phoneMessage.textContent = '';
+                passwordMessage.textContent = '';
+                confirmdMessage.textContent = '';
 
-
-
-
-            // Validate the email field
-            if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(emailInput)) {
-                emailMessage.textContent = ' enter a valid email address.';
-                valid = false;
-            }
-
-            // Validate the mobile field
-            if (!/^\d{10}$/.test(phoneInput)) {
-                phoneMessage.textContent = 'Enter a valid 10-digit number.';
-                valid = false;
-            }
-
-            // Validate the password field
-            if (passwordInput.length < 6) {
-                passwordMessage.textContent = 'Enter a password of 6 characters.';
-                valid = false;
-            }
-
-            if (passwordInput !== confirminput) {
-                confirmdMessage.textContent = 'Confirm password and password must be same';
-                valid = false;
-            }else if(passwordInput.length < 6){
-                confirmdMessage.textContent = 'Enter a password of 6 characters.';
-                valid = false;
-            }
-
-
-            // Otherwise, return false
-
-            if (valid) {
-                const email = emailInput;
-                console.log(email)
-                fetch(`/Sendotp?email=${email}`)
-                    .then((res) => {
-                        if (res.status === 200) {
-                            $("#exampleModal").modal('show')
-                        }
-                    })
+                // Validate the first name field
+                if (nameInput.trim() === '') {
+                    nameMessage.textContent = 'Please enter your username.';
+                    valid = false;
+                } else if (/^\d+$/.test(nameInput.trim())) {
+                    nameMessage.textContent = 'Please enter a valid user name without numbers.';
+                    valid = false;
+                } else {
+                    // The input is not empty and doesn't contain numbers, clear any previous error message.
+                    nameMessage.textContent = '';
                 }
-        }
 
 
+                // Validate the email field
+                if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(emailInput)) {
+                    emailMessage.textContent = ' enter a valid email address.';
+                    valid = false;
+                }
 
+                // Validate the mobile field
+                if (!/^\d{10}$/.test(phoneInput)) {
+                    phoneMessage.textContent = 'Enter a valid 10-digit number.';
+                    valid = false;
+                }
 
-    </script>
-</body>
+                // Validate the password field
+                if (passwordInput.length < 6) {
+                    passwordMessage.textContent = 'Enter a password of 6 characters.';
+                    valid = false;
+                }
 
-</html>
+                if (passwordInput !== confirminput) {
+                    confirmdMessage.textContent = 'Confirm password and password must be same';
+                    valid = false;
+                } else if (passwordInput.length < 6) {
+                    confirmdMessage.textContent = 'Enter a password of 6 characters.';
+                    valid = false;
+                }
+                document.getElementById('username').addEventListener('input', function () {
+                    document.getElementById('nameerr').textContent = '';
+                });
+
+                document.getElementById('phone').addEventListener('input', function () {
+                    document.getElementById('phoneerr').textContent = '';
+                });
+                document.getElementById('email').addEventListener('input', function () {
+                    document.getElementById('emailerr').textContent = '';
+                });
+
+                document.getElementById('password').addEventListener('input', function () {
+                    document.getElementById('passworderr').textContent = '';
+                });
+                document.getElementById('confirmpassword').addEventListener('input', function () {
+                    document.getElementById('confirmerr').textContent = '';
+                });
+
+                // Otherwise, return false
+
+                if (valid) {
+                    const email = emailInput;
+                    console.log(email)
+                    fetch(`/Sendotp?email=${email}`)
+                        .then((res) => {
+                            if (res.status === 200) {
+                                $("#exampleModal").modal('show')
+                                Maincounter()
+                            }
+                        })
+                }
+            }
+
+            $('#exampleModal').on('hidden.bs.modal', function (e) {
+                document.getElementById('minutediv').innerHTML = '0<span id="minute">2</span>: <span id="seconds">59</span>'
+            });
+
+        </script>

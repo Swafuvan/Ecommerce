@@ -1,248 +1,286 @@
-<!DOCTYPE HTML>
-<html lang="en">
+<%- include('adminHeader') %>
 
-<head>
-    <meta charset="utf-8">
-    <title>Evara Dashboard</title>
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:title" content="">
-    <meta property="og:type" content="">
-    <meta property="og:url" content="">
-    <meta property="og:image" content="">
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/images/Colours logo.png">
-    <!-- Template CSS -->
-    <link href="/assets/adminAsset/css/main.css" rel="stylesheet" type="text/css" />
-</head>
-
-<body>
-    <div class="screen-overlay"></div>
-    <aside class="navbar-aside" id="offcanvas_aside">
-        <div class="aside-top">
-            <a href="index.html" class="brand-wrap">
-                <img src="/images/Colours (1).small.png" class="logo" alt="Evara Dashboard">
-            </a>
-            <div>
-                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i>
-                </button>
-            </div>
-        </div>
-        <nav>
-            <ul class="menu-aside">
-                <li class="menu-item">
-                    <a class="menu-link" href="/admin"> <i class="icon material-icons md-home"></i>
-                        <span class="text">Dashboard</span>
-                    </a>
-                </li>
-                <li class="menu-item active">
-                    <a class="menu-link" href="/admin/product"> <i class="icon material-icons md-shopping_bag"></i>
-                        <span class="text">Products</span>
-                    </a>
-                </li>
-                <li class="menu-item ">
-                    <a class="menu-link" href="/admin/orders"> <i class="icon material-icons md-shopping_cart"></i>
-                        <span class="text">Orders</span>
-                    </a>
-
-                </li>
-                <li class="menu-item ">
-                    <a class="menu-link" href="/admin/usermanagement"> <i class="icon material-icons md-store"></i>
-                        <span class="text">Usermanagement</span>
-                    </a>
-
-                </li>
-                <li class="menu-item ">
-                    <a class="menu-link" href="/admin/category"> <i class="icon material-icons md-add_box"></i>
-                        <span class="text">Category</span>
-                    </a>
-                </li>
-        </nav>
-    </aside>
-    <main class="main-wrap">
-        <header class="main-header navbar">
-            <div class="col-search">
-                <form class="searchform">
-                    <div class="input-group">
-                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
-                        <button class="btn btn-light bg" type="button"> <i
-                                class="material-icons md-search"></i></button>
+    <section class="content-main">
+        <div class="row">
+            <form action="addProduct" method="post" enctype="multipart/form-data">
+                <div class="col-9">
+                    <div class="content-header">
+                        <h2 class="content-title">Add New Product</h2>
+                        <div>
+                            <button type="submit" onclick="return validation()"
+                                class="btn btn-light rounded font-sm mr-5  hover-up">Unpublish</button>
+                            <button type="submit" onclick="return validation()"
+                                class="btn btn-md rounded font-sm  hover-up">Publish</button>
+                        </div>
                     </div>
-                </form>
-            </div>
-            <div class="col-nav">
-                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
-                        class="material-icons md-apps"></i> </button>
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link btn-icon" href="#">
-                            <i class="material-icons md-notifications animation-shake"></i>
-                            <span class="badge rounded-pill">3</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="requestfullscreen nav-link btn-icon"><i
-                                class="material-icons md-cast"></i></a>
-                    </li>
-                    <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage"
-                            aria-expanded="false"><i class="material-icons md-public"></i></a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                            <a class="dropdown-item text-brand" href="#"><img src="assets/imgs/theme/flag-us.png"
-                                    alt="English">English</a>
+                </div>
+                <div class="col-xxl-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <label for="product_title" class="form-label">Product title</label>
+                                <input type="text" placeholder="Type here" name="Name" class="form-control" id="Name">
+                                <span id="producterr" style="color: red;"></span>
+                            </div>
+                            <div class="row gx-3">
+                                <div class="col-md-4  mb-3">
+                                    <label for="product_color" class="form-label">Color</label>
+                                    <input type="text" name="Color" placeholder="Type here" class="form-control"
+                                        id="Color">
+                                    <span id="colorerr" style="color: red;"></span>
+                                </div>
+                                <div class="col-md-4  mb-3">
+                                    <label for="product_size" class="form-label">Size</label>
+                                    <input type="text" name="size" placeholder="Type here" class="form-control"
+                                        id="size">
+                                    <span id="sizeerr" style="color: red;"></span>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="product_brand" class="form-label">For</label>
+                                <input type="text" name="For" placeholder="Type here" class="form-control" id="For">
+                                <span id="forerr" style="color: red;"></span>
+                            </div>
                         </div>
-                    </li>
-                    <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount"
-                            aria-expanded="false"> <img class="img-xs rounded-circle"
-                                src="assets/adminAsset/imgs/people/avatar2.jpg" alt="User"></a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
-                            <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit
-                                Profile</a>
-                            <a class="dropdown-item text-danger" href="#"><i
-                                    class="material-icons md-exit_to_app"></i>Logout</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </header>
-        <section class="content-main">
-            <div class="row">
-                <form action="addProduct" method="post" onsubmit="return productvalidation()" enctype="multipart/form-data" >
-                    <div class="col-9">
-                        <div class="content-header">
-                            <h2 class="content-title">Add New Product</h2>
+                    </div> <!-- card end// -->
+                    <div class="card mb-4">
+                        <div class="card-body">
                             <div>
-                                <button type="submit"
-                                    class="btn btn-light rounded font-sm mr-5 text-body hover-up">Unpublish</button>
-                                <button type="submit" class="btn btn-md rounded font-sm hover-up">Publish</button>
+                                <label class="form-label">Description</label>
+                                <textarea placeholder="Type here" id="description" name="description"
+                                    class="form-control" rows="4"></textarea>
+                                <span id="descerr" style="color: red;"></span>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xxl-6">
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <div class="mb-4">
-                                    <label for="product_title" class="form-label">Product title</label>
-                                    <input type="text" placeholder="Type here" name="Name" class="form-control"
-                                        id="product_title">
-                                </div>
-                                <div class="row gx-3">
-                                    <div class="col-md-4  mb-3">
-                                        <label for="product_color" class="form-label">Color</label>
-                                        <input type="text" name="Color" placeholder="Type here" class="form-control"
-                                            id="product_color">
-                                    </div>
-                                    <div class="col-md-4  mb-3">
-                                        <label for="product_size" class="form-label">Size</label>
-                                        <input type="text" name="size" placeholder="Type here" class="form-control"
-                                            id="product_size">
-                                    </div>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="product_brand" class="form-label">For</label>
-                                    <input type="text" name="For" placeholder="Type here" class="form-control"
-                                        id="product_brand">
-                                </div>
-                            </div>
-                        </div> <!-- card end// -->
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <div>
-                                    <label class="form-label">Description</label>
-                                    <textarea placeholder="Type here" name="description" class="form-control"
-                                        rows="4"></textarea>
-                                </div>
-                            </div>
-                        </div> <!-- card end// -->
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <div>
-                                    <label class="form-label">coverImages</label>
-                                    <input class="form-control" name="coverImages" accept="image/*" type="file">
-                                </div>
-                            </div>
+                    </div> <!-- card end// -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div>
+                                <label class="form-label">coverImages</label>
+                                <input class="form-control" name="coverImages" id="coverimage" accept="image/*"
+                                    type="file">
+                                <span id="coverimgerr" style="color: red;"></span>
 
-                        </div> <!-- card end// -->
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <div>
-                                    <label class="form-label">images</label>
-                                    <input class="form-control" name="images" accept="image/*" type="file" multiple>
-                                </div>
                             </div>
+                        </div>
 
-                        </div> <!-- card end// -->
-                    </div>
-                    <div class="col-xxl-6">
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <div class="mb-4">
-                                    <label class="form-label">Price</label>
-                                    <input type="text" name="price" placeholder="Type here" class="form-control">
-                                </div>
-                                <div class="mb-4">
-                                    <label class="form-label">Status</label>
-                                    <select name="publish" class="form-select">
-                                        <option value="true">Publish</option>
-                                        <option value="false">Unpublish</option>
-                                    </select>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="form-label">Quantity</label>
-                                    <input type="text" name="Quantity" placeholder="Type here" class="form-control">
-                                </div>
-
-                                <h5 class="mb-3">Categories</h5>
-                                <% category.forEach((item)=>{ %>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="category" 
-                                        id="product-cat">
-                                    <label class="form-check-label" for="product-cat"> <%= item.Name %> </label>
-                                </div>
-                                 <% }) %>
-                                
+                    </div> <!-- card end// -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div>
+                                <label class="form-label">images</label>
+                                <input class="form-control" name="images" id="images" accept="image/*" type="file"
+                                    multiple>
+                                <span id="imageserr" style="color: red;"></span>
                             </div>
-                        </div> <!-- card end// -->
-                    </div>
-                </form>
-            </div>
-        </section>
-        <footer class="main-footer font-xs">
-            <div class="row pb-30 pt-15">
-                <div class="col-sm-6">
-                    <script>
-                        document.write(new Date().getFullYear())
-                    </script> ©, Evara - HTML Ecommerce Template .
+                        </div>
+
+                    </div> <!-- card end// -->
                 </div>
-                <div class="col-sm-6">
-                    <div class="text-sm-end">
-                        All rights reserved
-                    </div>
+                <div class="col-xxl-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <label class="form-label">Price</label>
+                                <input type="text" id="price" name="price" placeholder="Type here" class="form-control">
+                                <span id="priceerr" style="color: red;"></span>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Offer</label>
+                                <select name="offerType" id="offerType" class="form-select" onchange="showOffer()">
+                                    <option value="none">None</option>
+                                    <option value="percentage">Percentage</option>
+                                    <option value="price">Price</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-4" id="offer" style="display: none;">
+                                <label for="product_color" class="form-label">Product Offer</label>
+                                <input type="text" name="offer" class="form-control" id="productOffer"
+                                    placeholder="Offer">
+                                <span id="offererr" style="color: red;"></span>
+
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Quantity</label>
+                                <input type="text" id="Quantity" name="Quantity" placeholder="Type here"
+                                    class="form-control">
+                                <span id="qntyerr" style="color: red;"></span>
+                            </div>
+                            <h5 class="mb-3">Categories</h5>
+                            <div class="form-check">
+                                <select class="form-control" name="category" id="">
+                                    <% category.forEach((item)=>{ %>
+                                        <option value="<%= item.Name %>">
+                                            <%= item.Name %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+
+                            </div>
+
+
+                        </div>
+                    </div> <!-- card end// -->
                 </div>
-            </div>
-        </footer>
-    </main>
+            </form>
+        </div>
+    </section>
 
-    <script>
-        function productvalidation(){
+    <%- include('adminFooter') %>
 
+        </main>
 
-            return true
-        }
-    </script>
-    <script src="/assets/adminAsset/js/vendors/jquery-3.6.0.min.js"></script>
-    <script src="/assets/adminAsset/js/vendors/bootstrap.bundle.min.js"></script>
-    <script src="/assets/adminAsset/js/vendors/select2.min.js"></script>
-    <script src="/assets/adminAsset/js/vendors/perfect-scrollbar.js"></script>
-    <script src="/assets/adminAsset/js/vendors/jquery.fullscreen.min.js"></script>
-    <!-- Main Script -->
-    <script src="/assets/adminAsset/js/main.js" type="text/javascript"></script>
-</body>
+        <script>
 
-</html>
+            function showOffer() {
+                if (document.getElementById('offerType').value != 'none') {
+                    document.getElementById('offer').style.display = 'block'
+                } else {
+                    document.getElementById('offer').style.display = 'none'
+                }
+            }
+
+            function validation() {
+                let check = true
+                const nameInput = document.getElementById('Name').value
+                const colorinput = document.getElementById('Color').value
+                const sizeinput = document.getElementById('size').value
+                const forinput = document.getElementById('For').value
+                const descinput = document.getElementById('description').value
+                const priceinput = document.getElementById('price').value
+                const qntyinput = document.getElementById('Quantity').value
+                const offerinput = document.getElementById('productOffer').value
+                const imagesinput = document.getElementById('images').files
+                const coverimginput = document.getElementById('coverimage').files
+                const offerTypeinput = document.getElementById('offerType').value
+
+                const nameMessage = document.getElementById('producterr');
+                const colormessage = document.getElementById('colorerr');
+                const sizemessage = document.getElementById('sizeerr');
+                const formessage = document.getElementById('forerr');
+                const descmessage = document.getElementById('descerr');
+                const pricemessage = document.getElementById('priceerr');
+                const qntymessage = document.getElementById('qntyerr');
+                const offermessage = document.getElementById('offererr');
+                const coverimgmessage = document.getElementById('coverimgerr');
+                const imagesmessage = document.getElementById('imageserr');
+
+                nameMessage.textContent = '';
+                colormessage.textContent = '';
+                sizemessage.textContent = '';
+                formessage.textContent = '';
+                descmessage.textContent = '';
+                pricemessage.textContent = '';
+                qntymessage.textContent = '';
+                offermessage.textContent = '';
+                imagesmessage.textContent = '';
+                coverimgmessage.textContent = '';
+
+                if (/.*\d.*/.test(nameInput.trim())) {
+                    nameMessage.textContent = 'Please enter a product name without numbers.';
+                    check = false
+                } else if (!nameInput) {
+                    // The input is not empty and doesn't contain numbers, clear any previous error message.
+                    nameMessage.textContent = 'Enter a proper proper name';
+                    check = false
+                }
+
+                // Validate the password field
+                if (!colorinput) {
+                    colormessage.textContent = 'Enter the product colors.';
+                    check = false
+                }
+                if (!sizeinput) {
+                    sizemessage.textContent = 'Enter the product size.';
+                    check = false
+                }
+                if (!forinput) {
+                    formessage.textContent = 'Enter the product For cetegory.';
+                    check = false
+                }
+
+                if (imagesinput.length <= 2) {
+                    imagesmessage.textContent = 'Please Add minimum 2 and maximum 5 images';
+                    check = false
+                }
+                if (coverimginput.length !== 1) {
+                    coverimgmessage.textContent = 'Please Add Coverimage image';
+                    check = false
+                }
+
+                if (!priceinput) {
+                    pricemessage.textContent = 'Enter the product Price.';
+                    check = false
+                } else if (!priceinput.trim()) {
+                    pricemessage.textContent = 'Enter the product For cetegory.';
+                    check = false
+                } else if (parseFloat(priceinput) <= 0) {
+                    pricemessage.textContent = 'Please enter product price greaterthan 0.';
+                    check = false;
+                }
+
+                if (!qntyinput) {
+                    qntymessage.textContent = 'Enter the product For publish/Unpublish.';
+                    check = false
+                } else if (parseInt(qntyinput) <= 0) {
+                    qntymessage.textContent = 'Please enter product Quantity morethan 0.';
+                    check = false;
+                }
+
+                if (!descinput) {
+                    descmessage.textContent = 'Enter the product description.';
+                    check = false
+                } else if (descinput.length < 10) {
+                    descmessage.textContent = 'product Description morethan 10 letters.';
+                    check = false
+                }
+
+                if (offerTypeinput !== 'none') {
+                    if (!offerinput) {
+                        offermessage.textContent = 'Enter the product offer.';
+                        check = false
+                    } else if(!offerTypeinput === 'percentage' && offerinput <= 50 && offerinput > 1){
+                        offermessage.textContent = 'Offer limit should be between 1% to 50%.';
+                        check = false
+                    }else if(!offerTypeinput === 'price' && offerinput <= 500 && offerinput > 1){
+                        offermessage.textContent = 'product offer price limit is 1 /- to 500 /-.';
+                        check = false
+                    }
+                }
+
+                document.getElementById('Name').addEventListener('input', function () {
+                    document.getElementById('producterr').textContent = '';
+                });
+
+                document.getElementById('Color').addEventListener('input', function () {
+                    document.getElementById('colorerr').textContent = '';
+                });
+
+                document.getElementById('size').addEventListener('input', function () {
+                    document.getElementById('sizeerr').textContent = '';
+                });
+
+                document.getElementById('For').addEventListener('input', function () {
+                    document.getElementById('forerr').textContent = '';
+                });
+
+                document.getElementById('description').addEventListener('input', function () {
+                    document.getElementById('descerr').textContent = '';
+                });
+
+                document.getElementById('price').addEventListener('input', function () {
+                    document.getElementById('priceerr').textContent = '';
+                });
+
+                document.getElementById('Quantity').addEventListener('input', function () {
+                    document.getElementById('qntyerr').textContent = '';
+                });
+
+                document.getElementById('productOffer').addEventListener('input', function () {
+                    document.getElementById('offererr').textContent = '';
+                });
+
+                return check
+            }
+
+        </script>

@@ -1,0 +1,62 @@
+
+<%- include('header') %>
+
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="/" rel="nofollow">Home</a>
+                <span></span> Profile
+                <span></span> Wallet
+            </div>
+        </div>
+    </div>
+    <section class="section-padding footer-mid container">
+        <div>
+            <h2 class="my-4">My Wallet</h2>
+        </div>
+        <div class="btn btn-success-light p-4 d-flex justify-content-start " style="width: 100%">
+            <div>
+                <% if(walletdata.Balance >= 0){ %>
+                    <span class="h1">₹</span>
+                    <span class="h2"><%= walletdata.Balance %></span>
+                <% }else{ %>
+                    <span class="h1">₹</span>
+                    <span class="h1">0</span>
+                <% } %>
+            </div>
+        </div>
+        <div>
+            <h4 class="my-4">Transaction History</h4>
+        </div>
+        <div>
+            <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Transaction ID</th>
+                    <th scope="col">Date and Time </th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Transaction Type</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% let num =1 %>
+                <% if(walletdata.transactions){ %>
+                <% walletdata.transactions.forEach((items)=>{ %>
+                    <tr class="table-success">
+                        <th scope="row"><%= num %></th>
+                        <td><%= items.Date %></td>
+                        <td><%= items.amount %></td>
+                        <td><%= items.paymentType %></td>
+                        <td></td>
+                    </tr>
+                <% num++ %>
+                <% }) %>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<%- include('footer') %>

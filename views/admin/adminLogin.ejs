@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Evara Dashboard</title>
+    <title>Colours Pardha Palace</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -102,7 +102,7 @@
 
     <script>
         function validation() {
-
+            let check =true
             const emailInput = document.getElementById('email').value
             const passwordInput = document.getElementById('password').value
 
@@ -114,18 +114,24 @@
 
             if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(emailInput)) {
                 emailMessage.textContent = ' enter a valid email address.';
+                check =false
             }
 
             // Validate the password field
             if (passwordInput.length < 4) {
                 passwordMessage.textContent = 'Enter a password of 4 characters.';
+                check=false
             }
 
-            if (emailMessage.textContent === '' && passwordMessage.textContent === '') {
-                return true;
-            }
+            document.getElementById('email').addEventListener('input', function () {
+                document.getElementById('emailMessage').textContent = '';
+            });
 
-            return false
+            document.getElementById('password').addEventListener('input', function () {
+                document.getElementById('passwordMessage').textContent = '';
+            });
+
+            return check
         }
     </script>
 

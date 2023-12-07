@@ -1,0 +1,107 @@
+
+<%- include('adminHeader') %>
+
+<section class="content-main">
+    <div class="row">
+        <form action="/admin/addBanner" method="post" enctype="multipart/form-data" onsubmit="return validation()">
+            <div class="col-9">
+                <div class="content-header">
+                    <h2 class="content-title">Add New Banner</h2>
+                    <div>
+                        <button type="submit" onclick=""
+                            class="btn btn-light rounded font-sm mr-5  hover-up">Unpublish</button>
+                        <button type="submit" onclick=""
+                            class="btn btn-md rounded font-sm  hover-up">Publish</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label for="Name" class="form-label">Banner Name</label>
+                            <input type="text" placeholder="Type here" name="Name" class="form-control" id="Name">
+                            <span id="couponerr" style="color: red;"></span>
+                        </div>
+                        
+                       
+                    </div>
+                </div> 
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div>
+                            <label class="form-label" for="description">Description</label>
+                            <textarea placeholder="Type here" id="description" name="description"
+                                class="form-control" rows="4"></textarea>
+                            <span id="descerr" style="color: red;"></span>
+                        </div>
+                    </div>
+                </div> 
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div>
+                            <label class="form-label" for="images">image</label>
+                            <input type="file" accept="image/*" placeholder="Valid Price" name="images" class="form-control" id="images">
+                            <span id="imgerr" style="color: red;"></span>
+                        </div>
+                    </div>
+                </div> 
+                
+                
+            </div>
+            <div class="col-xxl-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label class="form-label" for="expiryDate">expiryDate</label>
+                            <input type="date" id="ExpiryDate" name="ExpiryDate" placeholder="Type here" class="form-control">
+                            <span id="priceerr" style="color: red;"></span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label class="form-label" for="Link">link</label>
+                            <input type="date" id="Link" name="Link" placeholder="Type here" class="form-control">
+                            <span id="priceerr" style="color: red;"></span>
+                        </div>
+                    </div>
+                </div> <!-- card end// -->
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+   
+
+    function validation(){
+        let check = true
+                const nameInput = document.getElementById('Name').value
+                const descinput = document.getElementById('description').value
+                const priceinput = document.getElementById('price').value
+                const qntyinput = document.getElementById('valid').value
+                const offerinput = document.getElementById('productOffer').value
+                const imagesinput = document.getElementById('images').files
+                const offerTypeinput = document.getElementById('offerType').value
+
+                const nameMessage = document.getElementById('couponerr');
+                const descmessage = document.getElementById('descerr');
+                const pricemessage = document.getElementById('priceerr');
+                const qntymessage = document.getElementById('valid');
+                const offermessage = document.getElementById('offererr');
+                const imagesmessage = document.getElementById('imageserr');
+
+                nameMessage.textContent = '';
+                colormessage.textContent = '';
+                sizemessage.textContent = '';
+                formessage.textContent = '';
+                descmessage.textContent = '';
+                pricemessage.textContent = '';
+                qntymessage.textContent = '';
+                offermessage.textContent = '';
+                imagesmessage.textContent = '';
+    }
+   
+</script>
+
+<%- include('adminFooter') %>
