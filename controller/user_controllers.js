@@ -3,7 +3,7 @@ const Order = require('../model/orderModel');
 const products = require('../model/productModel');
 const Address = require('../model/addressModel');
 
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { sendOtp, createToken } = require('../model/OTP');
 const { default: mongoose } = require('mongoose');
 const { ObjectId } = require('mongodb');
