@@ -1,6 +1,6 @@
 const randomstring = require('randomstring')
 const nodemailer = require('nodemailer');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs');
 require('dotenv').config()
 
 function generateOtp() {
