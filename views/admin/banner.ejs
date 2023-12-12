@@ -15,37 +15,44 @@
     <div>
         <table class="table ">
             <thead> 
-                <th> image</th>
-                <th> Name</th>
-                <th> description</th>
-                <th>expiryDate </th>
+                
+                <th>Name</th>
+                <th>description</th>
+                <th>Start Date </th>
+                <th>expiry Date </th>
                 <th>Publish </th>
-                <th> Features</th>
+                <th>Features</th>
             </thead>
         </table>
     </div>
         <div class="card mb-1">
             <div class="card-body">
-                
-                <article class="itemlist">
+            <% bannerdata.forEach((items)=>{ %>
+                <article class="itemlist ">
 
-                    <div class="row align-items-center">
-                        <div class="col col-check flex-grow-0">
-                            <h4>Name</h4>
-                        </div>
-                        <div class="col-lg-4 col-sm-4 col-8  ">                                
+                    <div class="row align-items-center d-flex">
+                        
+                        <div class="col-lg-2 col-sm-4 col-8  ">                                
                                 <div class="info">
-                                    <h6 class="mb-0">
-                                        type </h6>
+                                    <p class="mb-0">
+                                        <%= items.name %> </p>
                                 </div>
                         </div>
                         <div class="col-lg-2 col-sm-2 col-4 col-price"> <span>
-                           date
+                            <%= items.Links %>
+                         </span>
+                        </div>
+                        <div class="col-lg-2 col-sm-2 col-4 col-price"> <span>
+                           <%= items.startDate %>
                         </span>
-                     </div>
-                        <div class="col-lg-2 col-sm-2 col-4 col-status">
-                            <span class="badge rounded-pill alert-success">
-                                
+                        </div>
+                        <div class="col-lg-2 col-sm-2 col-4 col-price"> <span>
+                           <%= items.expiryDate %>
+                        </span>
+                        </div>
+                        <div class="col-lg-2 col-sm-2 col-4 col-status ">
+                            <span class="badge rounded-pill alert-success p-1">
+                                <%= items.publish %>
                             </span>
                         </div>
                        
@@ -58,7 +65,7 @@
                     </div> <!-- row .// -->
 
                 </article> <!-- itemlist  .// -->
-               
+               <% }) %>
 
             </div> <!-- card-body end// -->
         </div> <!-- card end// -->

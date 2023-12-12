@@ -88,7 +88,9 @@ router.post('/couponList',coupon.listCoupon)
 
 router.get('/banner',admin.bannerManagement)
 
-router.get('/addBanner',admin.addbannerManagement)
+router.get('/addBanner',admin.addbannerManagement);
+
+router.post('/addBanner',upload.fields([{name:'images'}]),admin.bannerManagementpost)
 
 
 module.exports = router;

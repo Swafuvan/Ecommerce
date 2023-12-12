@@ -2,17 +2,18 @@ const Order = require('../model/orderModel');
 const cart = require('../model/cartModel');
 const products = require('../model/productModel');
 const Address = require('../model/addressModel');
-const coupon = require('../model/couponModel')
-// const Razorpay = require('razorpay')
+const coupon = require('../model/couponModel');
 
 const { default: mongoose } = require('mongoose');
 const { ObjectId } = require('mongodb');
 const Razorpay = require('razorpay');
 const userandadminModel = require('../model/database-model');
 const wallet = require('../model/walletModel');
+ require('dotenv').config()
+
 const instance = new Razorpay({
-    key_id: 'rzp_test_oQO9XJPXOTcdjc',
-    key_secret: 'E8ZjtmRd866yIZuCZ1xfbewP',
+    key_id: process.env.keyId,
+    key_secret: process.env.keySecret,
 });
 
 async function getProductDetails(userdata) {
@@ -60,6 +61,7 @@ function generateRandomOrderId(prefix, length) {
 const checkoutpage = async (req, res, next) => {
     try {
         if (req.session.user) {
+            
             const data = req.session.user
             const Addressdata = await Address.findOne({ user: data._id })
             let cartdata = await cart.findOne({ userid: data._id });
@@ -221,7 +223,6 @@ const confirmorderpage = async (req, res, next) => {
                     }
                 })
             })
-            
            
             
             res.render('users/confirm-order', { data })
@@ -243,13 +244,13 @@ const ordercancellation = async (req, res, next) => {
         if (req.session.user) {
             const orderid = req.body.orderid
            
-            const cancelled = await Order.findOneAndUpdate({ _id: orderid }, {
+            const cancelleddata = await Order.findOneAndUpdate({ _id: orderid }, {
                 $set: {
                     status: 'Cancelled',
                     states: 'cancell'
                 }
             })
-            let replaceid = cancelled.products.map((data)=>{
+            let replaceid = cancelleddata.products.map((data)=>{
                 return {id:data.productid,qty:data.quantity}
             })
             console.log(replaceid);

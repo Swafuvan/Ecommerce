@@ -268,6 +268,7 @@ const categorypublish = async (req, res, next) => {
                     }
                 })
                 console.log(dataa);
+                await products.updateMany({category:dataa.Name},{$set:{publish:publish}})
             }
             res.status(200).json({ status: true })
         } else {
@@ -277,6 +278,19 @@ const categorypublish = async (req, res, next) => {
         console.log(error);
     }
 
+}
+
+async function reviewForproduct(req,res,next){
+    try {
+        if(req.session.user){
+            const review =req.body
+        }else{
+            res.redirect('/login')
+        }
+    } catch (error) {
+        
+    }
+   
 }
 
 async function adminPaginationpdt(req,res,next){
@@ -316,4 +330,5 @@ const deleteimages = async (req, res, next) => {
 module.exports = {
     adminproduct, adminaddproduct, categorymanagement, adminaddpost, categorypost, publishproduct, categorypublish
     , productupdate, categoryedit, productsview, categoryeditpost, editproductpage, deleteimages ,adminPaginationpdt
+    , reviewForproduct
 } 

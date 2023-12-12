@@ -171,7 +171,15 @@
               <div class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
                 <div class="w-100 text-center py-1 px-2"><span class="text-medium">Shipped Via:</span> UPS Ground</div>
                 <div class="w-100 text-center py-1 px-2"><span class="text-medium">Status:</span> Checking Quality</div>
+                <% if(order.status === 'Shipped' || order.status === 'Pending' || order.status === 'Processing'){ %>
                 <div class="w-100 text-center py-1 px-2"><span class="text-medium">Expected Date:</span> <span class="text-medium"><%= order.confirmDate %></span></div>
+                <% }else if(order.status === 'Delivered'){ %>
+                  <div class="w-100 text-center py-1 px-2"><span class="text-medium">Product Deliverd:</span> <span class="text-medium"></span></div>
+                <% }else if(order.status === 'returned'){ %>
+                  <div class="w-100 text-center py-1 px-2"><span class="text-medium">Product Pickup in few Days:</span> <span class="text-medium"></span></div>
+                <% }else{ %>
+                  <div class="w-100 text-center py-1 px-2"><span class="text-medium">Order Cancelled:</span> <span class="text-medium"></span></div>
+                <% } %>
               </div>
               <div class="card-body">
                 <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
@@ -215,6 +223,14 @@
                     </div>
                     <h4 class="step-title">Product Canceled</h4>
                   </div>
+                  <div class="step <%= order.status === 'returned' ? 'completed' : '' %> <%= order.status === 'returned' ? 'product-delivered' : '' %>">
+                    <div class="step-icon-wrap">
+                      <div class="step-icon">
+                        <i class="<%= order.status === 'returned' ? 'pe-7s-home' : 'pe-7s-check' %>"></i>
+                      </div>
+                    </div>
+                    <h4 class="step-title">Product Retrned</h4>
+                  </div>
                 </div>
               </div>
               
@@ -230,7 +246,7 @@
         
           <!-- Main content -->
           <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-12">
               <!-- Details -->
               <div class="card mb-4">
                 <div class="card-body">
@@ -336,52 +352,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-4">
-              <!-- Customer Notes -->
-              <div class="card mb-4">
-                <div class="card-body m-4">
-                  <h3 class="h6">Customer Rating</h3>
-                 
-                  <div class="rating-container" id="rating-div" data-productId="<%= order.products._id %>">
-                    <% if(userRating && userRating?.Ratings?.length>0){ %>
-                    <% for (let i = 1; i <= 5; i++) { %>
-                      <span class="star<%= i <= userRating?.Ratings[0].rating ? ' active' : '' %>" data-rating="<%= i %>">☆</span>
-                    <% } %>
-                
-                  <p>Selected Rating: <span id="selected-rating"><%=  userRating?.Ratings[0]?.rating %></span> stars</p>
-                  <% }else{ %>
-                    <span class="star" data-rating="1">☆</span>
-                    <span class="star" data-rating="2">☆</span>
-                    <span class="star" data-rating="3">☆</span>
-                    <span class="star" data-rating="4">☆</span>
-                    <span class="star" data-rating="5">☆</span>
-                    <p>Selected Rating: <span id="selected-rating"></span> stars</p>
-                    <% } %>
-                   
-                  </div>
-                </div>
-              </div>
-              
-              
-              <div class="card mb-4">
-                <!-- Shipping information -->
-                <div class="card-body">
-                  <h3 class="h6" style="text-align: center;" >Add a Review</h3>
-                  <% if(userReview!==null){ %>
-                  <div id="thankyou-message" style=" font-size: 20px; text-align: center; padding-top:160px ;height: 350px;">Thank you for your review! 😊</div>
-                  <% } else{ %>
-                  <form id="review-form">
-                    <div class="form-group">
-                      <label for="reviewText">Your Review:</label>
-                      <textarea class="form-control"  id="reviewText" rows="30" required style="height: 200px;"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit Review</button>
-                  </form>
-                 <% } %>
-                
-                </div>
-              </div>
-            </div>
+            
           </div>
         </div>
           </div>
@@ -391,71 +362,6 @@
  
           <script>
            
-              const stars = document.querySelectorAll(".star");
-              const productId = document.getElementById("rating-div").getAttribute("data-productId");
-              const selectedRating  = document.getElementById('selected-rating')
-            console.log(stars,productId)
-              stars.forEach((star) => {
-                star.addEventListener("click", async () => {
-                  const rating = star.getAttribute("data-rating");
-                  selectedRating.textContent = rating;
-                  // Make an HTTP request to your server to send the rating and productId
-                  try {
-                    const response = await fetch("/order-ratings", {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({ rating, productId }),
-                    });
-            
-                    if (response.ok) {
-                      // Update the stars on the frontend to show the selected rating
-                      stars.forEach((s) => {
-                        if (s.getAttribute("data-rating") <= rating) {
-                          s.classList.add("active");
-                        } else {
-                          s.classList.remove("active");
-                        }
-                      });
-                    } else {
-                      console.error("Failed to save the rating");
-                    }
-                  } catch (error) {
-                    console.error(error);
-                  }
-                });
-              });
-
-
-              // Event listener for the review form submission
-        document.getElementById("review-form").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        
-        const review = document.getElementById("reviewText").value;
-
-        // Make an HTTP request to your server to save the review
-        try {
-            const response = await fetch("/order-review", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ review,productId }),
-            });
-
-            if (response.ok) {
-            // Hide the form and show the thank you message
-            document.getElementById("review-form").style.display = "none";
-            document.getElementById("thankyou-message").style.display = "block";
-            } else {
-            console.error("Failed to save the review");
-            }
-        } catch (error) {
-            console.error(error);
-        }
-        });
-
-             </script>
+          </script>
            
     

@@ -10,6 +10,9 @@ const { ObjectId } = require('mongodb');
 const categories = require('../model/categoryModel');
 const wallet = require('../model/walletModel');
 const easyinvoice = require('easyinvoice');
+const {OAuth2Client}=require('google-auth-library');
+const { google } = require('googleapis');
+const client = new OAuth2Client(process.env.ClintId, process.env.ClientSecret);
 
 
 
@@ -144,7 +147,8 @@ const shoppage = async (req, res, next) => {
             default:
                 sortCriteria = {};
         }
-
+        const categoriesToShow = await categories.find({ publish: true });
+        
         let datas = await products.find({ publish: true }).sort(sortCriteria);
         if (search !== '') {
             datas = await products.find({
@@ -160,7 +164,7 @@ const shoppage = async (req, res, next) => {
             });
 
         }
-        const categoriesToShow = await categories.find({ publish: true });
+
         datas = req.session.productPagination || datas
         let data = req.session.user;
         let current = req.session.currentPage || 1
@@ -291,6 +295,33 @@ const editAddresspro = async (req, res, next) => {
         console.log(editeddata);
         await editeddata.save()
         res.redirect('/profile')
+    }
+}
+
+const editcheckoutaddress = async(req,res,next)=>{
+    if (req.session.user) {
+        const userdata = req.session.user._id
+        const datas = req.body;
+        let editeddata = await Address.findOne({ user: userdata })
+        editeddata.userAddress[req.body.index] = {
+            addressType: datas.addressType,
+            Firstname: datas.Firstname,
+            Lastname: datas.Lastname,
+            Address: datas.Address,
+            HouseNo: datas.HouseNo,
+            Street: datas.Street,
+            district: datas.district,
+            City: datas.City,
+            State: datas.State,
+            Landmark: datas.Landmark,
+            Country: datas.Country,
+            Pincode: datas.Pincode,
+            phone: datas.phone,
+            email: datas.email
+        }
+        console.log(editeddata);
+        await editeddata.save()
+        res.redirect('/checkout')
     }
 }
 
@@ -516,39 +547,7 @@ async function userinvoices(req, res, next) {
                     "translate": {},
                 };
 
-                //start 
-                // const data = {
-                //     "documentTitle": "INVOICE",
-                //     "currency": "INR",
-                //     "taxNotation": "gst",
-                //     "marginTop": 25,
-                //     "marginRight": 25,
-                //     "marginLeft": 25,
-                //     "marginBottom": 25,
-                //     "logo": "https://public.easyinvoice.cloud/img/watermark-draft.jpg",  
-                //     "background": "https://public.easyinvoice.cloud/img/watermark-draft.jpg",
-                //     "sender": {
-                //         "company": "Colours Pardha Palace",
-                //         "address": "Chanthappadi Ponnani Malappuram,Kerala",
-                //         "zip": "679577",
-                //         "city": "Malappuram",
-                //         "country": "INDIA"
-                //     },
-                //     "client": {
-                //         "company": order.AddressId.Firstname + order.AddressId.Lastname,
-                //         "address": order.AddressId.Address || 'nale',
-                //         "zip": order.AddressId.pincode || 'nale',
-                //         "city": order.AddressId.city || 'nale',
-                //         "phone": order.AddressId.phone ,
-                //         "country": order.AddressId.Country
-                //     },
-                //     "invoiceNumber": "123",
-                //     "invoiceDate": "2023-01-01",
-                //     "products": product,
-                //     "bottomNotice": "Thank you for your business."
-                // };
-
-                //end
+               
                 console.log(data);
                 await easyinvoice.createInvoice(data, function (result) {
                     console.log(result);
@@ -595,7 +594,7 @@ async function walletpage(req, res, next) {
                 console.log('sdxrcfgvbhjnkdfcgvbhvanninn1');
                 res.render('users/Wallet', { data, walletdata })
             } else {
-                console.log('ethi');
+               
                 const details = {
 
                     userId: new mongoose.Types.ObjectId(data._id),
@@ -614,6 +613,102 @@ async function walletpage(req, res, next) {
     }
 
 }
+
+
+function googlelogin(req,res,next){
+     
+     try {
+        console.log('dfghjklsdfghjkl');
+        req.session.GoogleFrom = req.query.from
+        const authUrl = client.generateAuthUrl({
+            access_type: 'offline',
+            scope: [
+                'https://www.googleapis.com/auth/userinfo.profile',
+                'https://www.googleapis.com/auth/userinfo.email',
+            ],
+            redirect_uri: process.env.googloRedirect,
+        });
+        res.redirect(authUrl)
+     } catch (error) {
+        console.log(error);
+     }
+    
+      
+      
+}
+
+
+
+async function googleLoginsuccess(req,res,next){
+    console.log("googleLoginsuccess");
+    const { code } = req.query;
+    try {
+        const tokenResponse = await client.getToken({
+            code,
+            redirect_uri: process.env.googloRedirect,
+        });
+
+        const tokens = tokenResponse.tokens;
+        client.setCredentials(tokens);
+        req.session.tokens = tokens;
+        res.redirect('/googleSuccess')
+    } catch (error) {
+        console.error('Error getting tokens:', error);
+        res.redirect('/ERROR');
+    }
+
+}
+
+async function googleloginsuccess(req,res,next){
+    console.log("googleloginsuccess");
+        if (req.session.tokens) {
+            console.log('if log------------');
+            try {
+                console.log('try log-------------------');
+                client.setCredentials(req.session.tokens);
+                const userInfo = await google.oauth2('v2').userinfo.get({ auth: client });
+                console.log(userInfo.data)
+                if (req.session.GoogleFrom === 'LOGIN') {
+                    let user = await userandadminModel.findOne({ email: userInfo.data.email })
+                    
+                    if (user) {
+                        if (await bcrypt.compare(userInfo.data.id, user.password)) {
+                            req.session.user = user
+                            res.redirect("/");
+                        } else {
+                            req.session.tryLogin = true
+                            res.redirect('/login')
+                        }
+                    } else {
+                        req.session.pleaseSignup = true
+                        res.redirect('/login')
+                    }
+    
+                } else if (req.session.GoogleFrom === 'SIGNUP') {
+                    let data = {
+                        username: userInfo.data.name,
+                        email: userInfo.data.email,
+                        phone: 1234567890,
+                        password: await bcrypt.hash(userInfo.data.id, 10),
+                        confirmpassword: await bcrypt.hash(userInfo.data.id, 10),
+                        status: true,
+                        admin: false,
+                        Image: userInfo.data.picture,
+                    }
+                    const user = await userandadminModel.insertMany(data)
+                    console.log(user)
+                    req.session.user = user[0]
+                    res.redirect("/");
+                }
+    
+            } catch (error) {
+                console.log('error log',error);
+                res.redirect('/ERROR');
+            }
+        } else {
+            res.redirect('/ERROR');
+        }
+ }
 
 function destroyToken(req, res, next) {
     setTimeout(() => {
@@ -638,6 +733,6 @@ module.exports = {
     homepage, loginpage, signuppage, loginpost, signuppost, sendotp, shoppage, logout, resendotp
     , userprofile, addUserAddress, editAddressdata, editAddresspro, deleteAddressdata, editprofile,
     emailverification, forgotPasswordpage, otpverfication, passwordchange, userinvoices, contactpage,
-    walletpage, paginationData,
+    walletpage, paginationData, googlelogin, googleLoginsuccess ,editcheckoutaddress ,googleloginsuccess
 
 }

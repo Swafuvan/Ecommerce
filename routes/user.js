@@ -19,6 +19,13 @@ router.get('/login', user.loginpage);
 
 router.post('/login', user.loginpost);
 
+router.get('/auth/google',user.googlelogin);
+
+router.get('/auth/google/callback',user.googleLoginsuccess);
+
+router.get('/googleSuccess',user.googleloginsuccess)
+
+
 router.get('/signup', user.signuppage);
 
 router.post('/signup', user.signuppost);
@@ -34,6 +41,8 @@ router.post('/addAddress', user.addUserAddress);
 router.post('/editaddress', user.editAddresspro);
 
 router.post('/addAddress1', user.editAddressdata);
+
+router.post('/editAddress1',user.editcheckoutaddress)
 
 router.post('/deleteAddress', user.deleteAddressdata);
 
@@ -59,6 +68,8 @@ router.get('/logout', user.logout);
 router.get('/productview', product.productsview);
 
 router.get('/generateInvoice',user.userinvoices);
+
+router.post('/productReview',product.reviewForproduct)
 
 router.get('/pagination',user.paginationData)
 

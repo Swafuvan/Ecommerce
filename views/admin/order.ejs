@@ -56,7 +56,7 @@
                                     <td><b><%= orderdata.AddressId.Firstname %></b></td>
                                     <td><%= orderdata.AddressId.email %></td>
                                     <td>₹<%= orderdata.totalPrice %></td>
-                                    <% if(orderdata.status==='Cancelled'){ %>
+                                    <% if(orderdata.status==='Cancelled' || orderdata.status==='returned'){ %>
                                     <td><span class="badge rounded-pill alert-danger"><%= orderdata.status %></span></td>
                                     <% }else if(orderdata.status==='Pending'){ %>
                                     <td><span class="badge rounded-pill alert-warning"><%= orderdata.status %></span></td>
@@ -90,19 +90,20 @@
                     <ul class="pagination justify-content-start">
                         <% if (current>1) { %>
                             <li class="page-item"><a class="page-link"
-                                    href="/admin/pagination?page=-1&current=<%= current %>"><i
-                                        class="material-icons md-chevron_left"></i></a></li>
-                                <li class="page-item "><a class="page-link"
-                                        href="/admin/pagination?value=1"><%= current-1 %></a></li>
-                            <% } %>
-                            <li class="page-item active"><a class="page-link"
-                                        href="/admin/pagination?value=2"><%= current %></a></li>
-                                <li class="page-item"><a class="page-link"
-                                        href="/admin/pagination?value=3"><%= current+1 %></a></li>
-                                <li class="page-item"><a class="page-link"
-                                        href="/admin/pagination?page=1&current=<%= current %>"><i
-                                            class="material-icons md-chevron_right"></i></a></li>
-                    </ul>
+                                href="/admin/pagination?page=-1&current=<%= current %>"><i
+                                    class="material-icons md-chevron_left"></i></a></li>
+                            <li class="page-item "><a class="page-link"
+                                href="/admin/pagination?value=1"><%= current-1 %></a></li>
+                        <% } %>
+                        <li class="page-item active"><a class="page-link"
+                            href="/admin/pagination?value=2"><%= current %></a></li>
+                        
+                            <li class="page-item"><a class="page-link"
+                                href="/admin/pagination?value=3"><%= current+1 %></a></li>
+                            <li class="page-item"><a class="page-link"
+                                href="/admin/pagination?page=1&current=<%= current %>"><i
+                                class="material-icons md-chevron_right"></i></a></li>
+            </ul>
                 </nav>
             </div>
         </section> <!-- content-main end// -->

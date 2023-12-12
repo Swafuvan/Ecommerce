@@ -1,6 +1,7 @@
 const randomstring = require('randomstring')
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt')
+require('dotenv').config()
 
 function generateOtp() {
     return randomstring.generate({
@@ -15,14 +16,14 @@ const sendOtp = async (senderEmail) => {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'swafuvancp@gmail.com', // Your email address
-            pass: 'lfpm chhw wvbl qytc' // Your email password
+            user: process.env.emailSender, // Your email address
+            pass: process.env.emailPasskey // Your email password
         }
     });
     let otp = generateOtp()
     // Setup email data
     let mailOptions = {
-        from: 'swafuvancp@gmail.com',
+        from: process.env.emailSender,
         to: senderEmail, // Receiver's email address
         subject: 'Email verification',
         text: `Your OTP is ${otp}`
@@ -44,8 +45,8 @@ const sendOtp = async (senderEmail) => {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'swafuvancp@gmail.com', // Your email address
-            pass: 'lfpm chhw wvbl qytc' // Your email password
+            user: process.env.emailSender, // Your email address
+            pass: process.env.emailPasskey // Your email password
         }
     });
     const otp = generateOtp()
@@ -54,7 +55,7 @@ const sendOtp = async (senderEmail) => {
     token = token.trim()
     console.log(`Your URL for verification is : http://localhost:5000/changePassword/${token}`);
     let mailOptions = {
-        from: 'swafuvancp@gmail.com',
+        from: process.env.emailSender,
         to: senderEmail, // Receiver's email address
         subject: 'Email verification',
         text: `Your URL for verification is : http://localhost:5000/changePassword/${token}`

@@ -46,7 +46,11 @@
                     <tr class="table-success">
                         <th scope="row"><%= num %></th>
                         <td><%= items.Date %></td>
-                        <td><%= items.amount %></td>
+                        <% if(items.paymentType === 'Debit'){ %>
+                            <td>-<%= items.amount %></td>
+                        <% }else { %>
+                            <td>+<%= items.amount %></td>
+                        <% } %>
                         <td><%= items.paymentType %></td>
                         <td></td>
                     </tr>

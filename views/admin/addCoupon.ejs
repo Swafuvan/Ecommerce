@@ -139,14 +139,27 @@
                 
 
                 nameMessage.textContent = '';
-                colormessage.textContent = '';
-                sizemessage.textContent = '';
-                formessage.textContent = '';
+                qntymessage.textContent = '';
                 descmessage.textContent = '';
                 pricemessage.textContent = '';
-                qntymessage.textContent = '';
                 offermessage.textContent = '';
+
+                if(!nameInput.trim()){
+                    namemessage.textContent = 'Please Enter the Banner Name'
+                    check= false
+                }
+                if(!descinput.trim()){
+                    descmessage.textContent= 'Please Enter the Description for Banner'
+                    check =false
+                }
+                return check
     }
+                document.getElementById('Name').addEventListener('input', function () {
+                    document.getElementById('couponerr').textContent = '';
+                });
+                document.getElementById('description').addEventListener('input', function () {
+                    document.getElementById('descerr').textContent = '';
+                });
    
 </script>
 

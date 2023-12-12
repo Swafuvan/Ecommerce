@@ -5,6 +5,8 @@ const storage = multer.diskStorage({
         cb(null, 'public/productimage/')
     },
     filename: (req, File, cb) => { 
+        let filesnames = Date.now() + Math.floor(Math.random() * 1000 ** 4) + ".png"+""
+        req.body.image=filesnames
         cb(null, File.originalname);
     }
 })

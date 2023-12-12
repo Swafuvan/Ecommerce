@@ -14,7 +14,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6">
-                        <% if(couponamount==='') { %>
+                        <% if(couponamount==='' ) { %>
                             <div class="toggle_info">
                                 <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a
                                         href="#coupon" data-bs-toggle="collapse" class="collapsed"
@@ -38,12 +38,12 @@
                             </div>
                             <% } else { %>
                                 <div class="toggle_info mb-20">
-                                    <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a
-                                            href="#coupon" data-bs-toggle="collapse" class="collapsed"
+                                    <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a
+                                            coupon?</span> <a href="#coupon" data-bs-toggle="collapse" class="collapsed"
                                             aria-expanded="false">Coupon Used</a></span>
                                 </div>
                                 <button class="btn p-2" onclick="removecoupon()">Remove coupon</button>
-                            <% } %>
+                                <% } %>
                     </div>
                 </div>
                 <div class="row">
@@ -57,186 +57,301 @@
                             <h4>Billing Details</h4>
 
                         </div>
-                        <% if(Addressdata.userAddress.length < 3 || Addressdata.userAddress.length === 0   ){ %>
-                            <div class="col-md-6 mb-20">
-                                <button class="btn rounded" data-bs-toggle="modal" data-bs-target="#exampleModal334">New
-                                    Address</button>
-                            </div>
-                            <% } %>
-                                <!-- Modal for Editing Address -->
-                                <div class="modal fade" id="exampleModal334" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel334" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content modal-dialog-scrollable">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="addressModalLabel">Add Address</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <!-- Your form content goes here -->
-                                                <form id="addressForm" action="/addAddress1" method="post" onsubmit="return validationAddress()">
-                                                    <!-- Form fields for address details -->
-                                                    <div class="form-group mb-3">
-                                                        <label for="addressType">Address Type</label>
-                                                        <select class="form-control" id="addressType"
-                                                            name="addressType">
-                                                            <option name="home" value="home">Home</option>
-                                                            <option name="work" value="work">Work</option>
-                                                            <option name="temp" value="temp">Temporary</option>
-                                                        </select>
-                                                        <span id="addressTypeError" class="text-danger"></span>
-                                                    </div>
-                                                    <div class="form-group mb-3">
-                                                        <label for="Firstname">Firstname</label>
-                                                        <input name="Firstname" type="text" class="form-control"
-                                                            id="Firstname" placeholder="Firstname">
-                                                        <span id="FirstnameError" class="text-danger"></span>
-                                                    </div>
-                                                    <div class="form-group mb-3">
-                                                        <label for="Lastname">Lastname</label>
-                                                        <input name="Lastname" type="text" class="form-control"
-                                                            id="Lastname" placeholder="Lastname">
-                                                        <span id="LastnameError" class="text-danger"></span>
-                                                    </div>
-                                                    <div class="form-group mb-3">
-                                                        <label for="houseNo">House No</label>
-                                                        <input name="HouseNo" type="text" class="form-control"
-                                                            id="houseNo" placeholder="House Number">
-                                                        <span id="houseNoError" class="text-danger"></span>
-                                                    </div>
-                                                    <div class="form-group mb-3">
-                                                        <label for="street">Street</label>
-                                                        <input name="Street" type="text" class="form-control"
-                                                            id="street" placeholder="Street">
-                                                        <span id="streetError" class="text-danger"></span>
-                                                    </div>
-                                                    <div class="form-group mb-3">
-                                                        <label for="landmark">Landmark</label>
-                                                        <input name="Landmark" type="text" class="form-control"
-                                                            id="landmark" placeholder="Landmark">
-
-                                                    </div>
-                                                    <div class="form-group mb-3">
-                                                        <label for="pincode">Pincode</label>
-                                                        <input name="Pincode" type="number" class="form-control"
-                                                            id="pincode" placeholder="Pincode">
-                                                        <span id="pincodeError" class="text-danger"></span>
-                                                    </div>
-                                                    <div class="form-group mb-3">
-                                                        <label for="city">City</label>
-                                                        <input name="City" type="text" class="form-control" id="city"
-                                                            placeholder="City">
-                                                        <span id="cityError" class="text-danger"></span>
-                                                    </div>
-                                                    <div class="form-group mb-3">
-                                                        <label for="district">District</label>
-                                                        <input name="district" type="text" class="form-control"
-                                                            id="district" placeholder="district">
-                                                        <span id="districtError" class="text-danger"></span>
-                                                    </div>
-                                                    <div class="form-group mb-3">
-                                                        <label for="state" class="mb-2 d-block">State</label>
-                                                        <input type="text" name="State" class="form-control" id="State"
-                                                            placeholder="State">
-                                                        <span id="stateError" class="text-danger"></span>
-
-                                                    </div>
-                                                    <div class="form-group mb-3">
-                                                        <label for="country">Country</label>
-                                                        <input name="Country" type="text" class="form-control"
-                                                            id="country" placeholder="Country">
-                                                        <span id="countryError" class="text-danger"></span>
-                                                    </div>
-                                                    <div class="form-group mb-3">
-                                                        <label for="phone">phone number</label>
-                                                        <input name="phone" type="text" class="form-control" id="phone"
-                                                            placeholder="phone number">
-                                                        <span id="phoneError" class="text-danger"></span>
-                                                    </div>
-                                                    <div class="form-group mb-3">
-                                                        <label for="email">Email</label>
-                                                        <input name="email" type="text" class="form-control" id="email"
-                                                            placeholder="Email">
-                                                        <span id="emailError" class="text-danger"></span>
-                                                    </div>
-
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Save changes</button>
-                                            </div>
-                                            </form>
-                                        </div>
-                                    </div>
+                        <% if(Addressdata){ %>
+                            <% if(Addressdata.userAddress.length < 3 ){ %>
+                                <div class="col-md-6 mb-20">
+                                    <button class="btn rounded" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal334">New
+                                        Address</button>
                                 </div>
+                                <% } %>
 
-                                <div class="row">
 
-                                    <% if(Addressdata && Addressdata.userAddress.length >0){ %>
+                                    <div class="row">
 
-                                        <% Addressdata.userAddress.forEach((item,index)=>{ %>
+                                        <% if(Addressdata && Addressdata.userAddress.length>0){ %>
 
-                                            <div class="col-lg-12">
-                                                <div class="card mb-20">
-                                                    <% if(item.addressType==='temp' ){ %>
+                                            <% Addressdata.userAddress.forEach((item,index)=>{ %>
 
-                                                        <div class="card-header d-flex">
-                                                            <h5 class="mb-0" style="display: inline;">Temporary Address</h5>
-                                                            <input type="radio" value="Temp" class="form-check-input float-left"
-                                                                onchange="activatebtn(this)" id="address" name="address"
-                                                                style="margin-left: 310px;">
-                                                        </div>
-                                                        <% }else if(item.addressType==='home' ){ %>
+                                                <div class="col-lg-12">
+                                                    <div class="card mb-20">
+                                                        <% if(item.addressType==='temp' ){ %>
 
                                                             <div class="card-header d-flex">
-                                                                <h5 class="mb-0" style="display: inline;">Home Address</h5>
-                                                                <input type="radio" value="Home"
-                                                                    onchange="activatebtn(this)"
-                                                                    class="form-check-input float-left" id="address1"
-                                                                    name="address" style="margin-left: 350px;">
+                                                                <h5 class="mb-0" style="display: inline;">Temporary
+                                                                    Address</h5>
+                                                                <input type="radio" value="Temp"
+                                                                    class="form-check-input float-left"
+                                                                    onchange="activatebtn(this)" id="address"
+                                                                    name="address" style="margin-left: 310px;">
+                                                                <a class=" p-0 ml-15" data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModal123"><i
+                                                                        class="fas fa-edit"></i></a>
                                                             </div>
-
-
-                                                            <% }else{ %>
+                                                            <% }else if(item.addressType==='home' ){ %>
 
                                                                 <div class="card-header d-flex">
-                                                                    <h5 class="mb-0" style="display: inline;">Work Address</h5>
-                                                                    <input type="radio" value="Work"
+                                                                    <h5 class="mb-0" style="display: inline;">Home
+                                                                        Address</h5>
+                                                                    <input type="radio" value="Home"
                                                                         onchange="activatebtn(this)"
-                                                                        class="form-check-input float-left" id="address2"
-                                                                        name="address" style="margin-left: 350px;">
+                                                                        class="form-check-input float-left"
+                                                                        id="address1" name="address"
+                                                                        style="margin-left: 350px;">
+                                                                    <a class=" p-0 ml-15" data-bs-toggle="modal"
+                                                                        data-bs-target="#exampleModal123"><i
+                                                                            class="fas fa-edit"></i></a>
                                                                 </div>
 
-                                                                <% } %>
-                                                                    <div class="card-body">
-                                                                        <address>
-                                                                            <%= item.Firstname %>,<br>
-                                                                            <%= item.phone %>, <%= item.Street %><br>
-                                                                            <%= item.HouseNo %>, <%= item.City %>,
-                                                                            <%= item.State %> <br> <%= item.pincode %>,
-                                                                            <%= item.district %><br>
-                                                                        </address>
-                                                                        <p>
-                                                                            <%= item.Country %>
-                                                                        </p>
+
+                                                                <% }else{ %>
+
+                                                                    <div class="card-header d-flex">
+                                                                        <h5 class="mb-0" style="display: inline;">Work
+                                                                            Address</h5>
+                                                                        <input type="radio" value="Work"
+                                                                            onchange="activatebtn(this)"
+                                                                            class="form-check-input float-left"
+                                                                            id="address2" name="address"
+                                                                            style="margin-left: 350px;">
+                                                                        <a class=" p-0 ml-15" data-bs-toggle="modal"
+                                                                            data-bs-target="#exampleModal123"><i
+                                                                                class="fas fa-edit"></i></a>
                                                                     </div>
 
-                                                </div>
-                                            </div>
+                                                                    <% } %>
+                                                                        <div class="card-body">
+                                                                            <address>
+                                                                                <%= item.Firstname %>,<br>
+                                                                                    <%= item.phone %>, <%= item.Street
+                                                                                            %><br>
+                                                                                            <%= item.HouseNo %>, <%=
+                                                                                                    item.City %>,
+                                                                                                    <%= item.State %>
+                                                                                                        <br>
+                                                                                                        <%= item.Pincode
+                                                                                                            %>,
+                                                                                                            <%= item.district
+                                                                                                                %><br>
+                                                                            </address>
+                                                                            <p>
+                                                                                <%= item.Country %>
+                                                                            </p>
+                                                                        </div>
 
-
-
-
-                                            <% }) %>
-                                                <% }else{ %>
-                                                    <div class="col-lg-12">
-                                                        <h5>Not Address Found</h5>
                                                     </div>
-                                                    <% } %>
-                                </div>
+                                                </div>
+
+
+
+
+                                                <% }) %>
+                                                    <% }else{ %>
+                                                        <div class="col-lg-12">
+                                                            <h5>Not Address Found</h5>
+                                                        </div>
+                                                        <% } %>
+
+                                                            <% }else{ %>
+                                                                <div class="col-md-6 mb-20">
+                                                                    <button class="btn rounded" data-bs-toggle="modal"
+                                                                        data-bs-target="#exampleModal334">New
+                                                                        Address</button>
+                                                                </div>
+                                                                <% } %>
+                                                                    <!-- Modal for Editing Address -->
+                                                                    <div class="modal fade" id="exampleModal334"
+                                                                        tabindex="-1"
+                                                                        aria-labelledby="exampleModalLabel334"
+                                                                        aria-hidden="true">
+                                                                        <div class="modal-dialog">
+                                                                            <div
+                                                                                class="modal-content modal-dialog-scrollable">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title"
+                                                                                        id="addressModalLabel">Add
+                                                                                        Address</h5>
+                                                                                    <button type="button"
+                                                                                        class="btn-close"
+                                                                                        data-bs-dismiss="modal"
+                                                                                        aria-label="Close"></button>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <!-- Your form content goes here -->
+                                                                                    <form id="addressForm"
+                                                                                        action="/addAddress1"
+                                                                                        method="post"
+                                                                                        onsubmit="return validationAddress()">
+                                                                                        <!-- Form fields for address details -->
+                                                                                        <div class="form-group mb-3">
+                                                                                            <label
+                                                                                                for="addressType">Address
+                                                                                                Type</label>
+                                                                                            <select class="form-control"
+                                                                                                id="addressType"
+                                                                                                name="addressType">
+                                                                                                <option name="home"
+                                                                                                    value="home">Home
+                                                                                                </option>
+                                                                                                <option name="work"
+                                                                                                    value="work">Work
+                                                                                                </option>
+                                                                                                <option name="temp"
+                                                                                                    value="temp">
+                                                                                                    Temporary</option>
+                                                                                            </select>
+                                                                                            <span id="addressTypeError"
+                                                                                                class="text-danger"></span>
+                                                                                        </div>
+                                                                                        <div class="form-group mb-3">
+                                                                                            <label
+                                                                                                for="Firstname">Firstname</label>
+                                                                                            <input name="Firstname"
+                                                                                                type="text"
+                                                                                                class="form-control"
+                                                                                                id="Firstname"
+                                                                                                placeholder="Firstname">
+                                                                                            <span id="FirstnameError"
+                                                                                                class="text-danger"></span>
+                                                                                        </div>
+                                                                                        <div class="form-group mb-3">
+                                                                                            <label
+                                                                                                for="Lastname">Lastname</label>
+                                                                                            <input name="Lastname"
+                                                                                                type="text"
+                                                                                                class="form-control"
+                                                                                                id="Lastname"
+                                                                                                placeholder="Lastname">
+                                                                                            <span id="LastnameError"
+                                                                                                class="text-danger"></span>
+                                                                                        </div>
+                                                                                        <div class="form-group mb-3">
+                                                                                            <label for="houseNo">House
+                                                                                                No</label>
+                                                                                            <input name="HouseNo"
+                                                                                                type="text"
+                                                                                                class="form-control"
+                                                                                                id="houseNo"
+                                                                                                placeholder="House Number">
+                                                                                            <span id="houseNoError"
+                                                                                                class="text-danger"></span>
+                                                                                        </div>
+                                                                                        <div class="form-group mb-3">
+                                                                                            <label
+                                                                                                for="street">Street</label>
+                                                                                            <input name="Street"
+                                                                                                type="text"
+                                                                                                class="form-control"
+                                                                                                id="street"
+                                                                                                placeholder="Street">
+                                                                                            <span id="streetError"
+                                                                                                class="text-danger"></span>
+                                                                                        </div>
+                                                                                        <div class="form-group mb-3">
+                                                                                            <label
+                                                                                                for="landmark">Landmark</label>
+                                                                                            <input name="Landmark"
+                                                                                                type="text"
+                                                                                                class="form-control"
+                                                                                                id="landmark"
+                                                                                                placeholder="Landmark">
+
+                                                                                        </div>
+                                                                                        <div class="form-group mb-3">
+                                                                                            <label
+                                                                                                for="pincode">Pincode</label>
+                                                                                            <input name="Pincode"
+                                                                                                type="number"
+                                                                                                class="form-control"
+                                                                                                id="pincode"
+                                                                                                placeholder="Pincode">
+                                                                                            <span id="pincodeError"
+                                                                                                class="text-danger"></span>
+                                                                                        </div>
+                                                                                        <div class="form-group mb-3">
+                                                                                            <label
+                                                                                                for="city">City</label>
+                                                                                            <input name="City"
+                                                                                                type="text"
+                                                                                                class="form-control"
+                                                                                                id="city"
+                                                                                                placeholder="City">
+                                                                                            <span id="cityError"
+                                                                                                class="text-danger"></span>
+                                                                                        </div>
+                                                                                        <div class="form-group mb-3">
+                                                                                            <label
+                                                                                                for="district">District</label>
+                                                                                            <input name="district"
+                                                                                                type="text"
+                                                                                                class="form-control"
+                                                                                                id="district"
+                                                                                                placeholder="district">
+                                                                                            <span id="districtError"
+                                                                                                class="text-danger"></span>
+                                                                                        </div>
+                                                                                        <div class="form-group mb-3">
+                                                                                            <label for="state"
+                                                                                                class="mb-2 d-block">State</label>
+                                                                                            <input type="text"
+                                                                                                name="State"
+                                                                                                class="form-control"
+                                                                                                id="State"
+                                                                                                placeholder="State">
+                                                                                            <span id="stateError"
+                                                                                                class="text-danger"></span>
+
+                                                                                        </div>
+                                                                                        <div class="form-group mb-3">
+                                                                                            <label
+                                                                                                for="country">Country</label>
+                                                                                            <input name="Country"
+                                                                                                type="text"
+                                                                                                class="form-control"
+                                                                                                id="country"
+                                                                                                placeholder="Country">
+                                                                                            <span id="countryError"
+                                                                                                class="text-danger"></span>
+                                                                                        </div>
+                                                                                        <div class="form-group mb-3">
+                                                                                            <label for="phone">phone
+                                                                                                number</label>
+                                                                                            <input name="phone"
+                                                                                                type="text"
+                                                                                                class="form-control"
+                                                                                                id="phone"
+                                                                                                placeholder="phone number">
+                                                                                            <span id="phoneError"
+                                                                                                class="text-danger"></span>
+                                                                                        </div>
+                                                                                        <div class="form-group mb-3">
+                                                                                            <label
+                                                                                                for="email">Email</label>
+                                                                                            <input name="email"
+                                                                                                type="text"
+                                                                                                class="form-control"
+                                                                                                id="email"
+                                                                                                placeholder="Email">
+                                                                                            <span id="emailError"
+                                                                                                class="text-danger"></span>
+                                                                                        </div>
+
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-secondary"
+                                                                                        data-bs-dismiss="modal">Close</button>
+                                                                                    <button type="submit"
+                                                                                        class="btn btn-primary">Save
+                                                                                        changes</button>
+                                                                                </div>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                    </div>
                     </div>
 
 
@@ -254,54 +369,52 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        
-                                            <% cartdata.forEach((items,index)=>{ %>
+
+                                        <% cartdata.forEach((items,index)=>{ %>
+                                            <tr>
+                                                <td class="image product-thumbnail"><img
+                                                        src="/productimage/<%= items.cartdetails[0].coverImages %>"
+                                                        alt="image"></td>
+                                                <td>
+                                                    <h5>
+                                                        <%= items.cartdetails[0].Name %>
+                                                    </h5> <span class="product-qty">x<%= items.products.quantity %>
+                                                    </span>
+                                                </td>
+                                                <td id="totalquantityprice_<%= items.products.productid %>">₹ <%=
+                                                        array[index] %>
+                                                </td>
+                                            </tr>
+
+                                            <% }) %>
+
                                                 <tr>
-                                                    <td class="image product-thumbnail"><img
-                                                            src="/productimage/<%= items.cartdetails[0].coverImages %>"
-                                                            alt="image"></td>
-                                                    <td>
-                                                        <h5>
-                                                            <%= items.cartdetails[0].Name %>
-                                                        </h5> <span class="product-qty">x<%= items.products.quantity %>
-                                                        </span>
-                                                    </td>
-                                                    <td id="totalquantityprice_<%= items.products.productid %>">₹ <%=
-                                                            array[index] %>
+                                                    <th>SubTotal</th>
+                                                    <td class="product-subtotal" colspan="2">₹ <%= total %>
                                                     </td>
                                                 </tr>
-                                                
-                                                    <% }) %>
 
-                                                                <tr>
-                                                                    <th>SubTotal</th>
-                                                                    <td class="product-subtotal" colspan="2">₹ <%= total
-                                                                            %>
-                                                                    </td>
-                                                                </tr>
-                                                               
-                                                                    <% if(couponamount){ %>
-                                                                        <tr>
-                                                                            <th>Discount</th>
-                                                                            <td class="product-subtotal" colspan="2">₹
-                                                                                <%= couponamount %>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <% } %>
-                                                                            <tr>
-                                                                                <th>Shipping</th>
-                                                                                <td colspan="2"><em>Free Shipping</em>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <th>Total</th>
-                                                                                <td colspan="2"
-                                                                                    class="product-subtotal"><span
-                                                                                        class="font-xl text-brand fw-900">₹
-                                                                                        <%= total + couponamount %>
-                                                                                    </span>
-                                                                                </td>
-                                                                            </tr>
+                                                <% if(couponamount){ %>
+                                                    <tr>
+                                                        <th>Discount</th>
+                                                        <td class="product-subtotal" colspan="2">₹
+                                                            <%= couponamount %>
+                                                        </td>
+                                                    </tr>
+                                                    <% } %>
+                                                        <tr>
+                                                            <th>Shipping</th>
+                                                            <td colspan="2"><em>Free Shipping</em>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Total</th>
+                                                            <td colspan="2" class="product-subtotal"><span
+                                                                    class="font-xl text-brand fw-900">₹
+                                                                    <%= total + couponamount %>
+                                                                </span>
+                                                            </td>
+                                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -342,10 +455,132 @@
 
 
                 </div>
-                <div class="row">
+                <% Addressdata?.userAddress.forEach((item,index)=>{ %>
+                <div class="modal fade" id="exampleModal123" tabindex="-1" aria-labelledby="exampleModalLabel334"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content modal-dialog-scrollable">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addressModalLabel">Edit Address</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Your form content goes here -->
+                                <form id="editaddressForm" action="/editAddress1" method="post"
+                                    onsubmit="return validation2()">
+                                    <!-- Form fields for address details -->
+                                    <div class="form-group mb-3">
+                                        <label for="addressType">Address
+                                            Type</label>
+                                        <input type="hidden" id="id" name="id" value="<%= item._id %>">
+                                        <input type="hidden" id="index" name="index" value="<%= index %>">
+                                        <select class="form-control" id="editAddressType"
+                                            value="<%= item.addressType %>" name="addressType" required>
+                                            <option value="home" name="home" <% if (item.addressType==='home' ) { %>
+                                                selected<% } %>>
+                                                    Home</option>
+                                            <option value="work" name="work" <% if (item.addressType==='work' ) { %>
+                                                selected<% } %>>
+                                                    Work</option>
+                                            <option value="temp" name="temp" <% if (item.addressType==='temp' ) { %>
+                                                selected<% } %>>
+                                                    Temporary</option>
+                                        </select>
+                                        <span id="addressTypeError" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group mb-3">
 
+                                        <label for="Firstname">Firstname</label>
+                                        <input type="text" class="form-control" id="editFirstname" name="Firstname"
+                                            value="<%= item.Firstname %>" placeholder="Firstname">
+                                        <span id="editfirstError" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group mb-3">
+
+                                        <label for="Lastname">Lastname</label>
+                                        <input type="text" class="form-control" id="editLastname" name="Lastname"
+                                            value="<%= item.Lastname %>" placeholder="Lastname">
+                                        <span id="editlastError" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group mb-3">
+
+                                        <label for="houseNo">House
+                                            No</label>
+                                        <input type="text" class="form-control" id="editHouseNo" name="HouseNo"
+                                            value="<%= item.HouseNo %>" placeholder="House Number">
+                                        <span id="edithouseNoError" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="street">Street</label>
+                                        <input type="text" class="form-control" id="editStreet" name="Street"
+                                            value="<%= item.Street %>" placeholder="Street">
+                                        <span id="editstreetError" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="landmark">Landmark</label>
+                                        <input type="text" class="form-control" id="Landmark" name="Landmark"
+                                            value="<%= item.Landmark%>" placeholder="Landmark">
+                                        <span id="editLandmarkError" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="pincode">Pincode</label>
+                                        <input type="number" class="form-control" id="editpincode" name="Pincode"
+                                            value="<%= item.Pincode %>" placeholder="Pincode">
+                                        <span id="editpincodeError" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="city">City</label>
+                                        <input type="text" class="form-control" id="editcity" name="City"
+                                            value="<%= item.City %>" placeholder="City">
+                                        <span id="editcityError" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="district">District</label>
+                                        <input type="text" class="form-control" id="editdistrict"
+                                            value="<%= item.district %>" name="district" placeholder="district">
+                                        <span id="editdistrictError" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="State" class="mb-2 d-block">State</label>
+                                        <input type="text" name="State" id="editState" value="<%= item.State %>">
+                                        <span id="editstateError" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="country">Country</label>
+                                        <input type="text" class="form-control" id="editcountry"
+                                            value="<%= item.Country %>" name="Country" placeholder="Country">
+                                        <span id="editcountryError" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="country">Email</label>
+                                        <input type="email" class="form-control" id="editemail"
+                                            value="<%= item.email %>" name="email" placeholder="Email">
+                                        <span id="editemailError" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="country">phone</label>
+                                        <input type="tel" class="form-control" id="editphone" value="<%= item.phone %>"
+                                            name="phone" placeholder="Phone number">
+                                        <span id="editphoneError" class="text-danger"></span>
+                                    </div>
+                                    <!-- Other address fields here... -->
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                    </div>
                 </div>
-            </div>
+                <% }) %>
             </div>
         </section>
     </main>
@@ -407,25 +642,25 @@
                         } else if (response.status === 201) {
                             razorpayfunction(responseData.order)
                         } else if (response.status === 203) {
-                                Swal.fire(
+                            Swal.fire(
                                 'Order Confirmed',
                                 'Your product is Added to Cart.',
                                 'success'
-                            ).then(() => { 
+                            ).then(() => {
                                 location.href = `/confirmpage?id=${orderID}`
                             })
-                        }else if(response.status === 208){
+                        } else if (response.status === 208) {
                             Swal.fire(
                                 'insufficient Balance',
                                 'Your wallet have not enough Balance.',
                                 'error'
                             )
                         }
-                            
+
                     }
                 }
 
-                }
+            }
 
             document.getElementById('couponButton').addEventListener('click', async (e) => {
 
@@ -623,22 +858,164 @@
                 return valid
             }
 
-        async function removecoupon(){
-            let removed = await fetch('/removeCoupon')
-            if(removed.status===205){
-                await Swal.fire(
-                    'Removed!',
-                    'Coupon Removed Successfully',
-                    'success'
-                )
-                location.reload()
-            }else{
-                Swal.fire(
-                    'Failed!',
-                    'Coupon Remove Failed',
-                    'Failed!'
-                )
+            async function removecoupon() {
+                let removed = await fetch('/removeCoupon')
+                if (removed.status === 205) {
+                    await Swal.fire(
+                        'Removed!',
+                        'Coupon Removed Successfully',
+                        'success'
+                    )
+                    location.reload()
+                } else {
+                    Swal.fire(
+                        'Failed!',
+                        'Coupon Remove Failed',
+                        'Failed!'
+                    )
+                }
             }
-        }
+
+            function validation2() {
+                let valid = true
+                const emailInput = document.getElementById('editemail').value
+                const firstInput = document.getElementById('editFirstname').value
+                const lastInput = document.getElementById('editLastname').value
+                const houseInput = document.getElementById('editHouseNo').value
+                const streetInput = document.getElementById('editStreet').value
+                const landInput = document.getElementById('Landmark').value
+                const pinInput = document.getElementById('editpincode').value
+                const cityInput = document.getElementById('editcity').value
+                const distInput = document.getElementById('editdistrict').value
+                const stateInput = document.getElementById('editState').value
+                const countryInput = document.getElementById('editcountry').value
+                const phoneInput = document.getElementById('editphone').value
+
+                const emailMessage = document.getElementById('editemailError');
+                const firstMessage = document.getElementById('editfirstError');
+                const lstnameMessage = document.getElementById('editlastError');
+                const houseMessage = document.getElementById('edithouseNoError');
+                const streetMessage = document.getElementById('editstreetError');
+                const landMessage = document.getElementById('editLandmarkError');
+                const pinMessage = document.getElementById('editpincodeError');
+                const cityMessage = document.getElementById('editcityError');
+                const districtMessage = document.getElementById('editdistrictError');
+                const stateMessage = document.getElementById('editstateError');
+                const countryMessage = document.getElementById('editcountryError');
+                const phoneMessage = document.getElementById('editphoneError');
+
+                emailMessage.textContent = '';
+                firstMessage.textContent = '';
+                lstnameMessage.textContent = '';
+                houseMessage.textContent = '';
+                streetMessage.textContent = '';
+                landMessage.textContent = '';
+                pinMessage.textContent = '';
+                cityMessage.textContent = '';
+                districtMessage.textContent = '';
+                stateMessage.textContent = '';
+                countryMessage.textContent = '';
+                phoneMessage.textContent = '';
+
+                if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(emailInput)) {
+                    emailMessage.textContent = ' enter a valid email address.';
+                    valid = false
+                }
+
+                if (!/^\d{10}$/.test(phoneInput)) {
+                    phoneMessage.textContent = 'Enter a valid 10-digit number.';
+                    valid = false;
+                }
+
+                // Validate the password field
+                if (lastInput.length > 10) {
+                    lstnameMessage.textContent = 'your Lastname is Too Long.';
+                    valid = false
+                } else if (lastInput.trim() === '') {
+                    lstnameMessage.textContent = 'Enter your Lastname.';
+                    valid = false
+                }
+                if (firstInput.length > 15) {
+                    firstMessage.textContent = 'your Firstname is Too Long.';
+                    valid = false
+                } else if (firstInput.trim() === '') {
+                    firstMessage.textContent = 'Enter your Firstname.';
+                    valid = false
+                }
+
+                if (houseInput.trim() === '') {
+                    houseMessage.textContent = 'Enter your house/Building number.';
+                    valid = false
+                }
+                if (streetInput.trim() === '') {
+                    streetMessage.textContent = 'Enter the street Address.';
+                    valid = false
+                }
+                if (landInput.trim() === '') {
+                    landMessage.textContent = 'Enter the Landmark .';
+                    valid = false
+                }
+                if (pinInput.trim() === '') {
+                    pinMessage.textContent = 'Enter the Pincode.';
+                    valid = false
+                }
+                if (cityInput.trim() === '') {
+                    cityMessage.textContent = 'Enter your City.';
+                    valid = false
+                }
+                if (distInput.trim() === '') {
+                    districtMessage.textContent = 'Enter your District.';
+                    valid = false
+                }
+                if (stateInput.trim() === '') {
+                    stateMessage.textContent = 'Enter your City.';
+                    valid = false
+                }
+                if (countryInput.trim() === '') {
+                    countryMessage.textContent = 'Enter your City.';
+                    valid = false
+                }
+
+
+                document.getElementById('editFirstname').addEventListener('input', function () {
+                    document.getElementById('editfirstError').textContent = '';
+                });
+
+                document.getElementById('editLastname').addEventListener('input', function () {
+                    document.getElementById('editlastError').textContent = '';
+                });
+                document.getElementById('email').addEventListener('input', function () {
+                    document.getElementById('editemailError').textContent = '';
+                });
+                document.getElementById('editHouseNo').addEventListener('input', function () {
+                    document.getElementById('edithouseNoError').textContent = '';
+                });
+                document.getElementById('editStreet').addEventListener('input', function () {
+                    document.getElementById('editstreetError').textContent = '';
+                });
+                document.getElementById('Landmark').addEventListener('input', function () {
+                    document.getElementById('editLandmarkError').textContent = '';
+                });
+                document.getElementById('pincode').addEventListener('input', function () {
+                    document.getElementById('editpincodeError').textContent = '';
+                });
+                document.getElementById('city').addEventListener('input', function () {
+                    document.getElementById('editcityError').textContent = '';
+                });
+                document.getElementById('district').addEventListener('input', function () {
+                    document.getElementById('editdistrictError').textContent = '';
+                });
+                document.getElementById('editState').addEventListener('input', function () {
+                    document.getElementById('editstateError').textContent = '';
+                });
+                document.getElementById('country').addEventListener('input', function () {
+                    document.getElementById('editcountryError').textContent = '';
+                });
+                document.getElementById('phone').addEventListener('input', function () {
+                    document.getElementById('editphoneError').textContent = '';
+                });
+
+                return valid
+            }
 
         </script>

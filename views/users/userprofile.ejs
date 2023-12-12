@@ -702,6 +702,12 @@
                         </label>
 
                         <label>
+                            <span> Profile Picture <span class="required">*</span></span>
+                            <input type="file" name="usrimage" id="usrimage" value="<%= userdata.phone %>" placeholder="profile Picture">
+                            <span class="text-danger" id="proimgerr"></span>
+                        </label>
+
+                        <label>
                             <span> Phone <span class="required">*</span></span>
                             <input type="tel" name="phone" id="prophone" value="<%= userdata.phone %>" placeholder="phone">
                             <span class="text-danger" id="prophoneerr"></span>

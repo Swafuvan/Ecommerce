@@ -9,6 +9,14 @@ const bannerSchema =new mongoose.Schema({
         default:new Date(),
     },
     expiryDate:String,
+    publish:{
+        type: Boolean,
+        default:false
+    },
+    Links:{
+        type:String,
+        default:'http://localhost:5000/shop'
+    }
 })
 
 const banner = mongoose.model('banner',bannerSchema)
