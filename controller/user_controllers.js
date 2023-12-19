@@ -10,8 +10,11 @@ const { ObjectId } = require('mongodb');
 const categories = require('../model/categoryModel');
 const wallet = require('../model/walletModel');
 const easyinvoice = require('easyinvoice');
-const {OAuth2Client}=require('google-auth-library');
+const { OAuth2Client } = require('google-auth-library');
 const { google } = require('googleapis');
+const banner = require('../model/bannerModel');
+const Coupon = require('../model/couponModel');
+const Contact = require('../model/userContact');
 const client = new OAuth2Client(process.env.ClintId, process.env.ClientSecret);
 
 
@@ -20,34 +23,64 @@ async function homepage(req, res, next) {
     try {
         if (req.session) {
             const details = await products.find({ publish: true })
-            const categ = await categories.find()
+            const ordersitem = await Order.find()
+            const categ = await categories.find({publish:true})
+            const banners = await banner.find({ publish: true })
+            const coupons =await Coupon.find({publish:true})
+
+            let topSelling = TopSelling(ordersitem)
+            topSelling= topSelling.sort((a,b)=>b.count-a.count);
+            let mostSold = [];
+            let productLimit=4;
+            for (const item of topSelling) {
+                if (mostSold.length >= productLimit) {
+                    break; 
+                }
+                const product = await products.findById(item.productid);
+                mostSold.push(product);
+            }
+
             if (req.session.user) {
-                let data = await userandadminModel.findById(req.session.user)
-                res.render('users/Userhomepage', { details, data, categ });
+                let data = await userandadminModel.findById(req.session.user);
+                let ordersdata = await Order.find({ status: 'Delivered' })
+
+                return res.render('users/Userhomepage', { details, data, categ, ordersdata, banners ,mostSold ,coupons});
             } else {
+                ordersdata = null
                 data = false
-                res.render('users/Userhomepage', { details, data, categ });
+                return res.render('users/Userhomepage', { details, data, categ, ordersdata, banners ,mostSold ,coupons});
             }
         } else {
-            res.redirect('/login')
+            return res.redirect('/login')
         }
 
     } catch (err) {
         console.log(err);
+        return res.redirect('/error')
     }
+}
+
+function TopSelling(ordersitem) {
+    let counts = {};let concatArray = [];
+    ordersitem.forEach(item => { concatArray = [...concatArray, ...item.products] })
+    concatArray.forEach(item => { counts[item.productid] = (counts[item.productid] || 0) + 1;  });
+    return Object.entries(counts).map(([productid, count]) => ({
+        productid,
+        count
+      }));
 }
 
 
 function loginpage(req, res, next) {
     let data = ""
     if (req.session.user) {
-        res.redirect('/')
+        return res.redirect('/')
     } else {
         if (req.session.blockeduser) {
             req.session.blockeduser = false
-            res.render('users/userLogin', { blocked: true, data });
+            return res.render('users/userLogin', { blocked: true, data });
         } else {
-            res.render('users/userLogin', { blocked: false, data });
+            return res.render('users/userLogin', { blocked: false, data });
         }
     }
 
@@ -62,6 +95,16 @@ async function loginpost(req, res, next) {
             if (compared) {
                 if (user.status) {
                     req.session.user = user;
+                    let walletdata = await wallet.findOne({ userId: req.session.user._id })
+                    if (!walletdata) {
+                        const details = {
+                            userId: new mongoose.Types.ObjectId(req.session.user._id),
+                            Balance: 0,
+                            transactions: []
+                        }
+                        walletdata = await wallet.insertMany([details])
+                        
+                    } 
                     res.redirect('/');
                 } else {
                     req.session.blockeduser = true
@@ -78,11 +121,17 @@ async function loginpost(req, res, next) {
 }
 
 function signuppage(req, res, next) {
-    if (req.session.user) {
-        res.redirect('/');
-    } else {
-        res.render('users/userSignup', { data: '' })
+    try {
+        if (req.session.user) {
+            res.redirect('/');
+        } else {
+            res.render('users/userSignup', { data: '' })
+        }
+    } catch (error) {
+        console.log(error);
+        res.redirect('/error')
     }
+
 }
 
 
@@ -99,15 +148,23 @@ async function signuppost(req, res, next) {
             details.password = await bcrypt.hash(details.password, 10);
             details.confirmpassword = await bcrypt.hash(details.confirmpassword, 10);
             details.status = true
-            const datas = await userandadminModel.insertMany([details]);
-            console.log(datas);
-            if (datas) {
 
-                if (req.session.otp === req.body.otp) {
-                    req.session.user = datas[0];
-                    resendotp(req, res, next)
+            if (req.session.otp === req.body.otp) {
+                resendotp(req, res, next)
+                const datas = await userandadminModel.insertMany([details]);
+                console.log(datas);
+                req.session.user = datas[0];
+                
+                let walletdata = await wallet.findOne({ userId: req.session.user._id })
+                if (!walletdata) {
+                    const details = {
+                        userId: new mongoose.Types.ObjectId(req.session.user._id),
+                        Balance: 0,
+                        transactions: []
+                    }
+                    walletdata = await wallet.insertMany([details])
                     res.redirect('/');
-                }
+                } 
             } else {
                 res.redirect('/signup');
             }
@@ -116,6 +173,7 @@ async function signuppost(req, res, next) {
         }
     } catch (err) {
         console.log(err);
+        res.redirect('/error')
     }
 }
 
@@ -126,7 +184,7 @@ const sendotp = async (req, res, next) => {
         res.status(400).json({})
     } else {
         req.session.otp = await sendOtp(req.query.email);
-        res.status(200).json({ status: true })
+        res.status(200).json({ status: true,otp:req.session.otp })
     }
 }
 
@@ -134,7 +192,6 @@ const shoppage = async (req, res, next) => {
     if (req.session.user) {
         let search = req.query.search || '';
         let sortOption = req.query.sort || 'featured';
-        // searchData= new RegExp('/^')
 
         let sortCriteria;
         switch (sortOption) {
@@ -148,7 +205,7 @@ const shoppage = async (req, res, next) => {
                 sortCriteria = {};
         }
         const categoriesToShow = await categories.find({ publish: true });
-        
+
         let datas = await products.find({ publish: true }).sort(sortCriteria);
         if (search !== '') {
             datas = await products.find({
@@ -195,6 +252,7 @@ const paginationData = async (req, res, next) => {
         }
     } catch (error) {
         console.log(error);
+        res.redirect('/error')
     }
 
 }
@@ -267,6 +325,7 @@ const addUserAddress = async (req, res, next) => {
         }
     } catch (error) {
         console.log(error);
+        res.redirect('/error')
     }
 
 }
@@ -298,7 +357,7 @@ const editAddresspro = async (req, res, next) => {
     }
 }
 
-const editcheckoutaddress = async(req,res,next)=>{
+const editcheckoutaddress = async (req, res, next) => {
     if (req.session.user) {
         const userdata = req.session.user._id
         const datas = req.body;
@@ -326,53 +385,59 @@ const editcheckoutaddress = async(req,res,next)=>{
 }
 
 const editAddressdata = async (req, res, next) => {
-    if (req.session.user) {
-        const userid = req.session.user._id
-        console.log(new mongoose.Types.ObjectId(userid));
-        const details = req.body
+    try {
+        if (req.session.user) {
+            const userid = req.session.user._id
+            console.log(new mongoose.Types.ObjectId(userid));
+            const details = req.body
 
-        let newAddress = {
-            addressType: details.addressType,
-            Firstname: details.Firstname,
-            Lastname: details.Lastname,
-            Address: details.Address,
-            HouseNo: details.HouseNo,
-            Street: details.Street,
-            City: details.City,
-            State: details.State,
-            Landmark: details.Landmark,
-            district: details.district,
-            Country: details.Country,
-            Pincode: details.Pincode,
-            phone: details.phone,
-            email: details.email
-        }
-        let userData = await Address.findOne({ user: new mongoose.Types.ObjectId(userid) })
-        if (userData) {
-            let alreadyInside = userData.userAddress.find((address) => {
-                if (address.addressType == newAddress.addressType) {
-                    return true
-                } else {
-                    return false
+            let newAddress = {
+                addressType: details.addressType,
+                Firstname: details.Firstname,
+                Lastname: details.Lastname,
+                Address: details.Address,
+                HouseNo: details.HouseNo,
+                Street: details.Street,
+                City: details.City,
+                State: details.State,
+                Landmark: details.Landmark,
+                district: details.district,
+                Country: details.Country,
+                Pincode: details.Pincode,
+                phone: details.phone,
+                email: details.email
+            }
+            let userData = await Address.findOne({ user: new mongoose.Types.ObjectId(userid) })
+            if (userData) {
+                let alreadyInside = userData.userAddress.find((address) => {
+                    if (address.addressType == newAddress.addressType) {
+                        return true
+                    } else {
+                        return false
+                    }
+                })
+
+                if (!alreadyInside) {
+                    userData.userAddress.push(newAddress)
                 }
-            })
+                userData.save()
+            } else {
+                let insertData = {
+                    user: userid,
+                    userAddress: [
+                        newAddress
+                    ]
+                }
+                let resp = await Address.insertMany([insertData])
 
-            if (!alreadyInside) {
-                userData.userAddress.push(newAddress)
             }
-            userData.save()
-        } else {
-            let insertData = {
-                user: userid,
-                userAddress: [
-                    newAddress
-                ]
-            }
-            let resp = await Address.insertMany([insertData])
-
+            res.redirect('/checkout')
         }
-        res.redirect('/checkout')
+    } catch (error) {
+        console.log(error);
+        res.redirect('/error')
     }
+
 }
 
 const deleteAddressdata = async (req, res, next) => {
@@ -417,6 +482,7 @@ const editprofile = async (req, res, next) => {
         }
     } catch (error) {
         console.log(error);
+        res.redirect('/error')
     }
 
 }
@@ -430,6 +496,7 @@ const forgotPasswordpage = async (req, res, next) => {
         }
     } catch (error) {
         console.log(error);
+        res.redirect('/error')
     }
 }
 
@@ -442,12 +509,13 @@ const emailverification = async (req, res, next) => {
             const token = await createToken(userdata.email)
             res.cookie('token', token, { httpOnly: true })
             res.cookie('email', userdata.email, { httpOnly: true })
-            res.status(200).json({ status: true })
+            return res.status(200).json({ status: true })
         } else {
-            res.status(204).json({ message: "No User Found" })
+            return res.status(204).json({ message: "No User Found" })
         }
     } catch (error) {
         console.log(error);
+        return res.redirect('/error')
     }
 }
 
@@ -466,6 +534,7 @@ const otpverfication = async (req, res, next) => {
         }
     } catch (error) {
         console.log(error);
+        res.redirect('/error')
     }
 }
 
@@ -490,6 +559,7 @@ const passwordchange = async (req, res, next) => {
         }
     } catch (error) {
         console.log(error);
+        res.redirect('/error')
     }
 }
 
@@ -527,11 +597,11 @@ async function userinvoices(req, res, next) {
                         "country": "INDIA"
                     },
                     "client": {
-                        "company": order.AddressId.Firstname +""+ order.AddressId.Lastname,
-                        "address": order.AddressId.Address || 'nale',
-                        "zip": order.AddressId.pincode || 'nale',
-                        "city": order.AddressId.city || 'nale',
-                        "phone": order.AddressId.phone+"",
+                        "company": order.AddressId.Firstname + "" + order.AddressId.Lastname,
+                        "address": order.AddressId.Landmark ,
+                        "zip": order.AddressId.HouseNo ,
+                        "city": order.AddressId.Street ,
+                        "phone": order.AddressId.phone  ,
                         "country": order.AddressId.Country
                     },
                     "information": {
@@ -547,10 +617,8 @@ async function userinvoices(req, res, next) {
                     "translate": {},
                 };
 
-               
-                console.log(data);
+
                 await easyinvoice.createInvoice(data, function (result) {
-                    console.log(result);
                     const base64Data = result.pdf;
                     console.log(base64Data);
                     res.setHeader('Content-Type', 'application/pdf');
@@ -571,17 +639,45 @@ async function userinvoices(req, res, next) {
     }
 }
 
-function contactpage(req, res, next) {
+function contactpage(req, res) {
     try {
-        if (req.session.user) {
-            res.render('users/contact')
+        if(req.session.user) {
+            const data=req.session.user;
+            res.render('users/contact',{data})
         } else {
             res.redirect('/login')
         }
     } catch (error) {
         console.log(error);
+        res.redirect('/error')
     }
 
+}
+
+async function contactpostpage(req,res){
+    try {
+        if(req.session.user){
+            const details= req.body
+            let datas={
+                userId:new mongoose.Types.ObjectId(req.session.user._id),
+                Name:details.name,
+                email:details.email,
+                phone:details.phone,
+                subject:details.subject,
+                message:details.message
+
+            }
+            console.log(details);
+            const inserted= await Contact.insertMany([datas])
+            console.log(inserted);
+            res.redirect('/contact')
+        }else{
+            res.redirect('/login')
+        } 
+    } catch (error) {
+        res.redirect('/error')
+    }
+    
 }
 
 async function walletpage(req, res, next) {
@@ -589,12 +685,10 @@ async function walletpage(req, res, next) {
         if (req.session.user) {
             const data = req.session.user
             let walletdata = await wallet.findOne({ userId: data._id })
-            console.log("asdsd" + walletdata);
             if (walletdata) {
-                console.log('sdxrcfgvbhjnkdfcgvbhvanninn1');
                 res.render('users/Wallet', { data, walletdata })
             } else {
-               
+
                 const details = {
 
                     userId: new mongoose.Types.ObjectId(data._id),
@@ -602,7 +696,6 @@ async function walletpage(req, res, next) {
                     transactions: []
                 }
                 walletdata = await wallet.insertMany([details])
-                console.log(walletdata);
                 res.render('users/Wallet', { data, walletdata })
             }
         } else {
@@ -610,15 +703,14 @@ async function walletpage(req, res, next) {
         }
     } catch (error) {
         console.log(error);
+        res.redirect('/error')
     }
 
 }
 
 
-function googlelogin(req,res,next){
-     
-     try {
-        console.log('dfghjklsdfghjkl');
+function googlelogin(req, res, next) {
+    try {
         req.session.GoogleFrom = req.query.from
         const authUrl = client.generateAuthUrl({
             access_type: 'offline',
@@ -629,18 +721,16 @@ function googlelogin(req,res,next){
             redirect_uri: process.env.googloRedirect,
         });
         res.redirect(authUrl)
-     } catch (error) {
+    } catch (error) {
         console.log(error);
-     }
-    
-      
-      
+        res.redirect('/error')
+    }
+
 }
 
 
 
-async function googleLoginsuccess(req,res,next){
-    console.log("googleLoginsuccess");
+async function googleLoginsuccess(req, res, next) {
     const { code } = req.query;
     try {
         const tokenResponse = await client.getToken({
@@ -659,56 +749,64 @@ async function googleLoginsuccess(req,res,next){
 
 }
 
-async function googleloginsuccess(req,res,next){
-    console.log("googleloginsuccess");
-        if (req.session.tokens) {
-            console.log('if log------------');
-            try {
-                console.log('try log-------------------');
-                client.setCredentials(req.session.tokens);
-                const userInfo = await google.oauth2('v2').userinfo.get({ auth: client });
-                console.log(userInfo.data)
-                if (req.session.GoogleFrom === 'LOGIN') {
-                    let user = await userandadminModel.findOne({ email: userInfo.data.email })
-                    
-                    if (user) {
-                        if (await bcrypt.compare(userInfo.data.id, user.password)) {
-                            req.session.user = user
-                            res.redirect("/");
-                        } else {
-                            req.session.tryLogin = true
-                            res.redirect('/login')
-                        }
+async function googleloginsuccess(req, res, next) {
+    if (req.session.tokens) {
+        try {
+            client.setCredentials(req.session.tokens);
+            const userInfo = await google.oauth2('v2').userinfo.get({ auth: client });
+            console.log(userInfo.data)
+            if (req.session.GoogleFrom === 'LOGIN') {
+                let user = await userandadminModel.findOne({ email: userInfo.data.email })
+
+                if (user) {
+                    if (await bcrypt.compare(userInfo.data.id, user.password)) {
+                        req.session.user = user
+                        res.redirect("/");
                     } else {
-                        req.session.pleaseSignup = true
+                        req.session.tryLogin = true
                         res.redirect('/login')
                     }
-    
-                } else if (req.session.GoogleFrom === 'SIGNUP') {
-                    let data = {
-                        username: userInfo.data.name,
-                        email: userInfo.data.email,
-                        phone: 1234567890,
-                        password: await bcrypt.hash(userInfo.data.id, 10),
-                        confirmpassword: await bcrypt.hash(userInfo.data.id, 10),
-                        status: true,
-                        admin: false,
-                        Image: userInfo.data.picture,
-                    }
-                    const user = await userandadminModel.insertMany(data)
-                    console.log(user)
-                    req.session.user = user[0]
-                    res.redirect("/");
+                } else {
+                    req.session.pleaseSignup = true
+                    res.redirect('/login')
                 }
-    
-            } catch (error) {
-                console.log('error log',error);
-                res.redirect('/ERROR');
+
+            } else if (req.session.GoogleFrom === 'SIGNUP') {
+                let data = {
+                    username: userInfo.data.name,
+                    email: userInfo.data.email,
+                    phone: 1234567890,
+                    password: await bcrypt.hash(userInfo.data.id, 10),
+                    confirmpassword: await bcrypt.hash(userInfo.data.id, 10),
+                    status: true,
+                    admin: false,
+                    Image: userInfo.data.picture,
+                }
+                const user = await userandadminModel.insertMany(data)
+                console.log(user)
+                req.session.user = user[0]
+                res.redirect("/");
             }
-        } else {
+
+        } catch (error) {
+            console.log('error log', error);
             res.redirect('/ERROR');
         }
- }
+    } else {
+        res.redirect('/ERROR');
+    }
+}
+
+const changeUserimage = async (req, res) => {
+    try {
+        if (req.session.user) {
+            res.redirect('/profile')
+        }
+    } catch (error) {
+        console.log(error);
+        res.redirect('/error')
+    }
+}
 
 function destroyToken(req, res, next) {
     setTimeout(() => {
@@ -733,6 +831,7 @@ module.exports = {
     homepage, loginpage, signuppage, loginpost, signuppost, sendotp, shoppage, logout, resendotp
     , userprofile, addUserAddress, editAddressdata, editAddresspro, deleteAddressdata, editprofile,
     emailverification, forgotPasswordpage, otpverfication, passwordchange, userinvoices, contactpage,
-    walletpage, paginationData, googlelogin, googleLoginsuccess ,editcheckoutaddress ,googleloginsuccess
+    walletpage, paginationData, googlelogin, googleLoginsuccess, editcheckoutaddress, googleloginsuccess,
+    changeUserimage ,contactpostpage
 
 }

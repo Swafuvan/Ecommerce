@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-    mongoose.connect('mongodb+srv://cpswafuvan:W7KUk9tSMJiJk6F9@cluster0.rixzbgg.mongodb.net/ColoursPardhaPalace?retryWrites=true&w=majority', {
+    mongoose.connect('mongodb+srv://cpswafuvan:W7KUk9tSMJiJk6F9@cluster0.rixzbgg.mongodb.net/ColoursPardhaPalace',{
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
@@ -10,4 +10,3 @@ const mongoose = require('mongoose');
     .catch((err) => {
         console.log("Connection Failed" + err);
     })
-

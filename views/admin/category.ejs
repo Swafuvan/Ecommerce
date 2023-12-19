@@ -1,14 +1,17 @@
 <%- include('adminHeader') %>
 
         <section class="content-main">
-            <div class="content-header">
+            <div class="content-header ">
                 <div>
                     <h2 class="content-title card-title">Categories </h2>
                     <p>Add, edit or delete a category</p>
                 </div>
-                <div>
-                    <input type="text" placeholder="Search Categories" class="form-control bg-white">
-                </div>
+                <form action="/admin/category" method="get" >
+                    <div class="d-flex">
+                        <input type="text" name="search" placeholder="Search Categories" class="form-control bg-white ">
+                        <button class="btn btn-light bg p-2" type="submit"><i class="material-icons md-search"></i></button>
+                    </div>
+                </form>
             </div>
             <div class="card">
                 <div class="card-body">
@@ -119,73 +122,6 @@
                                                         </tbody>
                                     </table>
 
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th>Order</th>
-                                                <th>Images</th>
-                                                <th>Name</th>
-                                                <th>Category</th>
-                                                <th>Description</th>
-                                                <th class="text-end">Featured</th>
-                                            </tr>
-                                        </thead>
-                                        <hr>
-                                        <h2> All Products </h2>
-                                        <tbody>
-                                            <% let slno=1 %>
-                                                <% product.forEach((products,index)=>{ %>
-                                                    <tr>
-                                                        <td class="text-center">
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    value="" />
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <%= slno %>
-                                                        </td>
-                                                        <td> <img class="img-sm img-thumbnail"
-                                                                src="/productimage/<%=products.coverImages%>" alt="">
-                                                        </td>
-                                                        <td><b>
-                                                                <%= products.Name %>
-                                                            </b></td>
-                                                        <td>
-                                                            <%= products.category %>
-                                                        </td>
-                                                        <td>
-                                                            <%= products.description %>
-                                                        </td>
-                                                        <td class="text-end">
-                                                            <div class="dropdown">
-                                                                <a href="#" data-bs-toggle="dropdown"
-                                                                    class="btn btn-light rounded btn-sm font-sm"> <i
-                                                                        class="material-icons md-more_horiz"></i> </a>
-                                                                <div class="dropdown-menu">
-
-                                                                    <a class="dropdown-item text-warning edit-category-button"
-                                                                        href="/admin/FeaturedPro">Featured
-                                                                    </a>
-                                                                    <a class="dropdown-item text-success edit-category-button"
-                                                                        href="/admin/popularPro">popular
-                                                                    </a>
-                                                                </div>
-                                                            </div> <!-- dropdown //end -->
-                                                        </td>
-
-
-                                                        <!-- Modal -->
-
-                                                    </tr>
-
-                                                    <% slno++; %>
-                                                        <% }) %>
-
-                                        </tbody>
-                                    </table>
-
 
                         </div>
 
@@ -273,14 +209,12 @@
                             body: JSON.stringify({dataid,data})
                         })
                         if(Detail.status===200){
-                            Swal.fire(
+                            await Swal.fire(
                                 'Done!',
                                 'Your Category is Published/Unpublished.',
                                 'success'
                             )}
-                            setTimeout(()=>{
-                                window.location.reload()
-                            },1000)
+                            
                     }
                     
                 }

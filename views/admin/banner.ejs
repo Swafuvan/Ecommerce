@@ -17,11 +17,10 @@
             <thead> 
                 
                 <th>Name</th>
-                <th>description</th>
                 <th>Start Date </th>
                 <th>expiry Date </th>
                 <th>Publish </th>
-                <th>Features</th>
+                <th>Features </th> 
             </thead>
         </table>
     </div>
@@ -38,15 +37,12 @@
                                         <%= items.name %> </p>
                                 </div>
                         </div>
-                        <div class="col-lg-2 col-sm-2 col-4 col-price"> <span>
-                            <%= items.Links %>
-                         </span>
-                        </div>
+                       
                         <div class="col-lg-2 col-sm-2 col-4 col-price"> <span>
                            <%= items.startDate %>
                         </span>
                         </div>
-                        <div class="col-lg-2 col-sm-2 col-4 col-price"> <span>
+                        <div class="col-lg-4 col-sm-2 col-4 col-price"> <span>
                            <%= items.expiryDate %>
                         </span>
                         </div>
@@ -57,9 +53,9 @@
                         </div>
                        
                         <div class="col-lg-2 col-sm-2 col-4 col-action text-end d-flex gap-2">
-                            <button  class="btn btn-sm font-sm btn-light rounded" id="couponitems_"
-                                onclick="bannerPublish()">
-                                <h5>publish</h5>
+                            <button  class="btn btn-sm font-sm btn-light rounded" id="buttonid"
+                                onclick="bannerPublish('<%= items._id %>')">
+                                <p><%= (items.publish === true)?'Unpublish':'publish' %></p>
                             </button>
                         </div>
                     </div> <!-- row .// -->
@@ -89,5 +85,24 @@
                 </nav>
             </div>
 </section>
-
+<script>
+    async function bannerPublish(id){
+        let responses = await Swal.fire({
+            title: 'Are you sure?',
+            text: "Do You want to Publish/Unpublish this Banner!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        })
+        if(responses.isConfirmed){
+            res = await fetch('/admin/bannerPublish?id='+id)
+            if (res.status === 200) {
+                location.reload()
+            }
+        }
+        
+    }
+</script>
 <%- include('adminFooter') %>

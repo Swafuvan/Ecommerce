@@ -40,7 +40,6 @@ const sendOtp = async (senderEmail) => {
     return otp;
 }
 
-
  function createToken(senderEmail) {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -53,12 +52,12 @@ const sendOtp = async (senderEmail) => {
     let token = generateToken() + otp 
 
     token = token.trim()
-    console.log(`Your URL for verification is : http://localhost:5000/changePassword/${token}`);
+    console.log(`Your URL for verification is : https://pardhapalace.site/changePassword/${token}`);
     let mailOptions = {
         from: process.env.emailSender,
         to: senderEmail, // Receiver's email address
         subject: 'Email verification',
-        text: `Your URL for verification is : http://localhost:5000/changePassword/${token}`
+        text: `Your URL for verification is : https://pardhapalace.site/changePassword/${token}`
     };
 
     // Send email

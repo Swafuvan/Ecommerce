@@ -8,23 +8,66 @@ const wallet = require('../model/walletModel');
 const fs = require('fs');
 const PDFDocument = require('pdfkit-table');
 const banner = require('../model/bannerModel');
+const categories = require('../model/categoryModel');
 
 
 
 async function adminhome(req, res, next) {
     if (req.session.admin) {
-        const users= await userandadminModel.find().sort({_id:-1}).limit(5)
+        const users = await userandadminModel.find().sort({ _id: -1 }).limit(5)
         const orderdetails = await Order.find({}).sort({ _id: -1 }).limit(10)
         const ordersdata = await Order.find({}).sort({ _id: -1 })
+
+        let countDelivered = Array(12).fill(0);
+        let countCanceled = Array(12).fill(0);
+        let totalCountByMonth = Array(12).fill(0);
+        let allOrders = ordersdata;
+        let deliveredData = ordersdata.filter((item) => item.status === 'Delivered');
+
+        // Count delivered orders by month
+        deliveredData.forEach((order) => {
+            let ordDate = order.orderDate.split('-');
+            let monthIndex = parseInt(ordDate[1], 10) - 1;
+
+            if (monthIndex >= 0 && monthIndex < countDelivered.length) {
+                countDelivered[monthIndex] += 1;
+            }
+        });
+
+        // Filter canceled orders
+        let canceledData = ordersdata.filter((item) => item.status === 'Cancelled');
+
+        // Count canceled orders by month
+        canceledData.forEach((order) => {
+            let ordDate = order.orderDate.split('-');
+            let monthIndex = parseInt(ordDate[1], 10) - 1;
+
+            if (monthIndex >= 0 && monthIndex < countCanceled.length) {
+                countCanceled[monthIndex] += 1;
+            }
+        });
+        allOrders.forEach((order) => {
+            let ordDate = order.orderDate.split('-');
+            let monthIndex = parseInt(ordDate[1], 10) - 1;
         
-        let salesData=[]
-        let orderData=[]
-        let orderCancel=[]
+            if (monthIndex >= 0 && monthIndex < totalCountByMonth.length) {
+                totalCountByMonth[monthIndex] += 1;
+            }
+        });
+        console.log(allOrders);
+        console.log(canceledData);
+        console.log(deliveredData);
+
+        let TotalDatas={}
+         TotalDatas.revenue=0
+          ordersdata.forEach((odr) => {
+             TotalDatas.revenue+=odr.totalPrice
+        })
+        TotalDatas.productcount = await products.countDocuments()
+        TotalDatas.orders=await Order.countDocuments()
+        TotalDatas.category = await categories.countDocuments()
         
-        salesData = ordersdata.status === 'Delivered' ;
-        orderData = ordersdata.length
-        orderCancel = ordersdata.status === 'Cancelled'
-        res.render('admin/adminHome', { orderdetails,users,salesData,orderData,orderCancel })
+        res.render('admin/adminHome', { orderdetails, users, totalCountByMonth, countDelivered, countCanceled, TotalDatas })
     } else {
         res.redirect('/admin/login')
     }
@@ -34,7 +77,7 @@ function adminlogin(req, res, next) {
     if (req.session.admin) {
         res.redirect('/admin')
     } else {
-        console.log(req.session.check);
+       
         if (req.session.check) {
             req.session.check = false
             res.render('admin/adminLogin', { check: true })
@@ -67,7 +110,7 @@ async function adminlogpost(req, res, next) {
 
 async function usermanagement(req, res) {
     if (req.session.admin) {
-        let datas = await database.find({ admin:false }).sort({ username: 1,_id:-1 }).limit(10);
+        let datas = await database.find({ admin: false }).sort({ username: 1, _id: -1 }).limit(10);
         if (datas) {
             datas = req.session.productPagination || datas
             let current = req.session.currentPage || 1
@@ -92,7 +135,7 @@ async function adminPaginationusr(req, res, next) {
             } else {
                 prod = (Number(req.query.value) * 10) - 10
             }
-            req.session.productPagination = await database.find().skip(prod).limit(10).sort({_id:-1})
+            req.session.productPagination = await database.find().skip(prod).limit(10).sort({ _id: -1 })
 
             res.redirect('/admin/usermanagement')
         } else {
@@ -167,16 +210,15 @@ async function salesReportData(startDate, endDate) {
         salesDetails.total += odr.totalPrice
     })
     salesDetails.revenue = 0
-    order.forEach((odr)=>{
-        salesDetails.revenue+=odr.totalPrice
+    order.forEach((odr) => {
+        salesDetails.revenue += odr.totalPrice
     })
     salesDetails.orders = order
-    
+
     return salesDetails
-    
+
 
 }
-
 
 
 async function adminPagination(req, res, next) {
@@ -191,7 +233,7 @@ async function adminPagination(req, res, next) {
             } else {
                 prod = (Number(req.query.value) * 10) - 10
             }
-            req.session.productPagination = await Order.find().skip(prod).limit(10).sort({_id:-1})
+            req.session.productPagination = await Order.find().skip(prod).limit(10).sort({ _id: -1 })
 
             res.redirect('/admin/orders')
         } else {
@@ -231,18 +273,52 @@ const editorderdetails = async (req, res, next) => {
                 status: details
             }
         })
+        if(changeorder.status==='Delivered' && changeorder.payment==='COD'){
+            changeorder.paymentStatus='success'
+        }else if(changeorder.status==='Cancelled' && changeorder.payment==='Bank Transfer'){
+            changeorder.paymentStatus='refund'
+        }else if( changeorder.status==='Cancelled' && changeorder.payment==='COD'){
+            changeorder.paymentStatus='refund'
+        }
+        changeorder.save()
+        console.log(changeorder);
         res.status(200).json({ status: true })
     } catch (error) {
         console.log(error);
     }
 }
 
+ 
 async function orderdetails(req, res, next) {
     if (req.session.admin) {
-        let orderdetails = await Order.find({}).sort({ _id: -1 }).limit(10)
-        orderdetails = req.session.productPagination || orderdetails
-        let current = req.session.currentPage || 1
-        res.render('admin/order', { orderdetails, current })
+        let search = '^' +req.query.search
+        search.trim()
+        console.log(search, req.query);
+        let orderdetails;
+        if (req.query.search) {
+            if (req.query.search !== '') {
+                console.log(req.query.search,search);
+                orderdetails = await Order.find({
+                    $and: [  
+                        {         
+                            $or: [
+                                { orderId: { $regex: search, $options: 'i' } },
+                                { 'AddressId.Firstname': { $regex: search, $options: 'i' } },
+                            ]
+                        }
+                    ]
+                })
+                orderdetails = req.session.productPagination || orderdetails
+                let current = req.session.currentPage || 1
+                res.render('admin/order', { orderdetails, current })
+            }
+        } else {
+            orderdetails = await Order.find().sort({ _id: -1 }).limit(10)
+            orderdetails = req.session.productPagination || orderdetails
+            let current = req.session.currentPage || 1
+            res.render('admin/order', { orderdetails, current })
+        }
+
     } else {
         res.redirect('/admin/login');
     }
@@ -272,15 +348,16 @@ async function orderdetailpage(req, res, next) {
 async function bannerManagement(req, res, next) {
     try {
         if (req.session.admin) {
-            const bannerdata=await banner.find()
-            res.render('admin/banner',{bannerdata})
+            const bannerdata = await banner.find({})
+            console.log(bannerdata);
+           return res.render('admin/banner', { bannerdata })
         } else {
-            res.redirect('/admin/login')
+           return res.redirect('/admin/login')
         }
     } catch (error) {
         console.log(error);
+        res.redirect('/error')
     }
-
 }
 
 async function returnorders(req, res, next) {
@@ -290,9 +367,11 @@ async function returnorders(req, res, next) {
             console.log(ordrid);
             const details = await Order.findByIdAndUpdate(ordrid, {
                 $set: {
-                    states: 'Returned'
+                    states: 'Returned',
+                    paymentStatus:'refund'
                 }
             })
+            
             console.log(details);
             const totalamount = details.totalPrice
             const userid = details.userId
@@ -330,6 +409,9 @@ async function cancelOrder(req, res, next) {
                     states: 'cancelled'
                 }
             })
+            if(orderData.payment==='Bank Transfer' || orderData.payment==='Wallet'){
+                orderData.paymentStatus='refund'
+            }
             console.log(orderData);
             let walletTrs = {
                 Date: new Date().toLocaleString(),
@@ -373,18 +455,33 @@ async function bannerManagementpost(req, res, next) {
             let datas = {
                 name: details.Name,
                 description: details.description,
-                image: req.body.image,
+                image: req.session.bannerimage,
                 startDate: details.startDate,
                 expiryDate: details.ExpiryDate,
                 publish: details.publish,
                 Links: details.links
             }
-            const added= await banner.insertMany([datas])
+            const added = await banner.insertMany([datas])
             console.log(added);
+            req.session.bannerimg=null
             res.redirect('/admin/banner')
         }
     } catch (error) {
         console.log(error);
+    }
+}
+
+async function bannerpublish (req,res){
+    try {
+        if(req.session.admin){
+            const bannerid =req.query.id;
+            let published =await banner.findById(bannerid)
+            published.publish = (published.publish===true)?false:true
+            await published.save()
+            res.status(200).json({status:true})
+        }
+    } catch (error) {
+        console.log(error); 
     }
 }
 
@@ -397,5 +494,5 @@ function adminlogout(req, res, next) {
 module.exports = {
     adminhome, adminlogin, adminlogpost, adminlogout, usermanagement, blockuser, orderdetails,
     orderdetailpage, editorderdetails, bannerManagement, addbannerManagement, returnorders,
-    cancelOrder, adminPagination, adminPaginationusr, salesreporting, bannerManagementpost
+    cancelOrder, adminPagination, adminPaginationusr, salesreporting, bannerManagementpost ,bannerpublish
 }

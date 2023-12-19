@@ -256,6 +256,8 @@
                                                                                                 class="form-control"
                                                                                                 id="landmark"
                                                                                                 placeholder="Landmark">
+                                                                                                <span id="landError"
+                                                                                                class="text-danger"></span>
 
                                                                                         </div>
                                                                                         <div class="form-group mb-3">
@@ -628,6 +630,7 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ checkedvalues })
                     })
+                    
                     if (response.ok) {
                         const responseData = await response.json();
                         let orderID = responseData.order
@@ -655,6 +658,13 @@
                                 'Your wallet have not enough Balance.',
                                 'error'
                             )
+                        }else if(response.status === 280){
+                            await Swal.fire(
+                                'Error',
+                                'Your Details are changed.',
+                                'error'
+                            )
+                            location.href = '/cart'
                         }
 
                     }
@@ -808,11 +818,11 @@
                     valid = false
                 }
                 if (stateInput.trim() === '') {
-                    stateMessage.textContent = 'Enter your City.';
+                    stateMessage.textContent = 'Enter your state.';
                     valid = false
                 }
                 if (countryInput.trim() === '') {
-                    countryMessage.textContent = 'Enter your City.';
+                    countryMessage.textContent = 'Enter your Country.';
                     valid = false
                 }
 

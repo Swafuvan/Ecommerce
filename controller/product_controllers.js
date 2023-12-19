@@ -18,6 +18,7 @@ async function adminproduct(req, res, next) {
         }
     } catch (error) {
         console.log(error);
+        res.redirect('/error')
     }
 
 }
@@ -54,6 +55,7 @@ async function productupdate(req, res, next) {
         return res.redirect('/admin/product')
     } catch (err) {
         console.log(err);
+        res.redirect('/error')
     }
 
 }
@@ -71,6 +73,7 @@ const editproductpage = async (req, res, next) => {
         }
     } catch (error) {
         console.log(error);
+        res.redirect('/error')
     }
 
 }
@@ -86,6 +89,7 @@ async function adminaddproduct(req, res, next) {
         }
     } catch (error) {
         console.log(error);
+        res.redirect('/error')
     }
 
 
@@ -94,7 +98,7 @@ async function adminaddproduct(req, res, next) {
 const productsview = async (req, res, next) => {
     try {
         if (req.session.user) {
-            console.log(req.query.id);
+            console.log(req.query.id );
             const datas = await products.findById(req.query.id)
             console.log(datas);
             const details = await products.find()
@@ -106,7 +110,8 @@ const productsview = async (req, res, next) => {
             res.redirect('/login')
         }
     } catch (error) {
-        error
+        console.log(error);
+        res.redirect('/error')
     }
 
 }
@@ -153,11 +158,12 @@ async function adminaddpost(req, res, next) {
             }
             res.redirect('/admin/product');
         } else {
-            res.redirect('/admin/login')
+            res.redirect('/admin/login');
         }
 
     } catch (error) {
         console.log(error);
+        res.redirect('/error')
     }
 
 }
@@ -165,21 +171,26 @@ async function adminaddpost(req, res, next) {
 async function categorymanagement(req, res, next) {
     try {
         if (req.session.admin) {
-            const product = await products.find()
-            const category = await categories.find()
-
-            // if (req.session.category) {
-            //     res.render('admin/category', { category, product, categorydata: req.session.categoriesdata });
-            // } else {
-
-            // }
-            let categoriesdata = (category.length != 0) ? category : {};
-            res.render('admin/category', { category, product, categoriesdata });
+            let searchdata= '^'+req.query.search
+            searchdata.trim()
+            if(req.query.search){
+                if(searchdata!=='null'){
+                    let category = await categories.find({Name:{$regex:searchdata,$options:'i'}})
+                    let categoriesdata = (category.length != 0) ? category : {};
+                    res.render('admin/category', { category,  categoriesdata })
+                }
+            }else{
+                const product = await products.find()
+                const category = await categories.find()  
+                let categoriesdata = (category.length != 0) ? category : {};
+                res.render('admin/category', { category,  categoriesdata });
+            }
+           
         } else {
             res.redirect('/admin/login')
         }
     } catch (error) {
-        error
+        res.redirect('/error')
     }
 
 }
@@ -197,6 +208,7 @@ const categoryedit = async (req, res, next) => {
         }
     } catch (error) {
         console.log(error);
+        res.redirect('/error')
     }
 
 }
@@ -221,6 +233,7 @@ const categoryeditpost = async (req, res, next) => {
         }
     } catch (error) {
         console.log(error);
+        res.redirect('/error')
     }
 
 }
@@ -235,6 +248,7 @@ const categorypost = async (req, res, next) => {
         }
     } catch (error) {
         console.log(error);
+        res.redirect('/error')
     }
 }
 
@@ -251,6 +265,7 @@ const publishproduct = async (req, res, next) => {
         res.status(200).json({ status: true })
     } catch (error) {
         console.log(error);
+        res.redirect('/error')
     }
 
 }
@@ -276,22 +291,12 @@ const categorypublish = async (req, res, next) => {
         }
     } catch (error) {
         console.log(error);
+        res.redirect('/error')
     }
 
 }
 
-async function reviewForproduct(req,res,next){
-    try {
-        if(req.session.user){
-            const review =req.body
-        }else{
-            res.redirect('/login')
-        }
-    } catch (error) {
-        
-    }
-   
-}
+
 
 async function adminPaginationpdt(req,res,next){
     try {
@@ -313,6 +318,7 @@ async function adminPaginationpdt(req,res,next){
         }
     } catch (error) {
         console.log(error);
+        res.redirect('/error')
     }
 }
 
@@ -330,5 +336,5 @@ const deleteimages = async (req, res, next) => {
 module.exports = {
     adminproduct, adminaddproduct, categorymanagement, adminaddpost, categorypost, publishproduct, categorypublish
     , productupdate, categoryedit, productsview, categoryeditpost, editproductpage, deleteimages ,adminPaginationpdt
-    , reviewForproduct
+    , 
 } 

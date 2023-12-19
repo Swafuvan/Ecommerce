@@ -26,7 +26,11 @@ const productSchema = new mongoose.Schema({
     },
     Color: String,
     For: String,
-    review:String
+    review:{
+        name:String,
+        Comment:String,
+        email:String
+    }
 })
 
 const products = mongoose.model('products', productSchema);

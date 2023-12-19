@@ -31,7 +31,7 @@
     <div class="screen-overlay"></div>
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
-            <a href="index.html" class="brand-wrap">
+            <a href="/admin/" class="brand-wrap">
                 <img src="/images/Colours (1).small.png" class="logo" alt="Colours Pardha">
             </a>
             <div>
@@ -86,13 +86,12 @@
     <main class="main-wrap">
         <header class="main-header navbar">
             <div class="col-search">
-                <form class="searchform">
+                <form class="searchform" action="/admin/orders" method="get">
                     <div class="input-group">
-                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
+                        <input list="search_terms" name="search" type="text" class="form-control" placeholder="Search term">
                         <button class="btn btn-light bg" type="button"> <i
                                 class="material-icons md-search"></i></button>
-                    </div>
-
+                        </div>
                 </form>
             </div>
             <div class="col-nav">
@@ -100,14 +99,8 @@
                         class="material-icons md-apps"></i> </button>
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link btn-icon" href="#">
-                            <i class="material-icons md-notifications animation-shake"></i>
-                            <span class="badge rounded-pill">3</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i>
-                        </a>
+                        </a> 
                     </li>
                     <li class="nav-item">
                         <a href="#" class="requestfullscreen nav-link btn-icon"><i

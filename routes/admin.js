@@ -3,8 +3,8 @@ const router = express.Router();
 const admin=require("../controller/admin_controllers");
 const product=require('../controller/product_controllers');
 const coupon =require('../controller/coupoController')
-const {upload,multiupload}=require('../controller/multer');
-const { route } = require('./user');
+const {upload,multiupload,bannerimg}=require('../controller/multer');
+
  
 
 /* GET users listing. */
@@ -90,7 +90,9 @@ router.get('/banner',admin.bannerManagement)
 
 router.get('/addBanner',admin.addbannerManagement);
 
-router.post('/addBanner',upload.fields([{name:'images'}]),admin.bannerManagementpost)
+router.post('/addBanner',bannerimg.single('images'),admin.bannerManagementpost);
+
+router.get('/bannerPublish',admin.bannerpublish)
 
 
 module.exports = router;

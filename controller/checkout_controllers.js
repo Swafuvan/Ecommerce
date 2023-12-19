@@ -76,6 +76,7 @@ const checkoutpage = async (req, res, next) => {
             const array = await totalProductPrice(cartdata)
 
             let total = getTotal(array)
+            req.session.originalPrices = total
             let selectedAddress = [];
             if (Addressdata) {
                 selectedAddress = Addressdata.userAddress.map((address) => address.addressType);
@@ -110,72 +111,79 @@ const checkoutpage = async (req, res, next) => {
 const placeorders = async (req, res, next) => {
     try {
         if (req.session.user) {
-      
-            const allCartdata = req.session.cartdetails
-            const user = req.session.user._id
-            const cartTotal = req.session.totalPrice
-            const couponData = req.session.coupon
-            let userAddress = await Address.findOne({ user: user })
-            const payment = req.body.checkedvalues
-            const Orderid = generateRandomOrderId('ORD', 7);
-            let productData = allCartdata.map((item) => {
-                return item.products
-            })
-            let couponDetails = {}
-            if (couponData) {
-                couponDetails = {
-                    couponId: couponData._id,
-                    orginalprice: cartTotal + req.session.discount
+            let cartid= req.session.cartdetails[0];
+            console.log(cartid);
+            const cartchecking = await cart.findById(cartid._id)
+            console.log(req.session.originalPrices , cartchecking.totalPrice);
+            if(req.session.originalPrices !== cartchecking.totalPrice){
+                return res.status(280).json({status:true})
+            }else{
+                if(req.session.originalPrices === cartchecking.totalPrice){
+                    const allCartdata = req.session.cartdetails
+                    const user = req.session.user._id
+                    const cartTotal = req.session.totalPrice
+                    const couponData = req.session.coupon
+                    let userAddress = await Address.findOne({ user: user })
+                    const payment = req.body.checkedvalues
+                    const Orderid = generateRandomOrderId('ORD', 7);
+                    let productData = allCartdata.map((item) => {
+                        return item.products
+                    })
+                    let couponDetails = {}
+                    if (couponData) {
+                        couponDetails = {
+                            couponId: couponData._id,
+                            orginalprice: cartTotal + req.session.discount
+                        }
+                    }
+                    
+                    userAddress = userAddress.userAddress[0]
+
+                    const order = {
+                        paymentId: (payment === 'Wallet') ? 'Wallet' : 'COD',
+                        orderId: Orderid,
+                        AddressId: userAddress,
+                        products: productData,
+                        totalPrice: cartTotal,
+                        userId: new mongoose.Types.ObjectId(user),
+                        payment: payment,
+                        couponData: couponDetails
+                    }
+                    if (payment === "COD") {
+                        await Order.insertMany([order])
+                             res.status(200).json({ status: true, order })
+                    } else if (payment === "Bank Transfer") {
+                        console.log(payment);
+                        req.session.order = order
+                        let total = order.totalPrice * 100
+                        generateOrder(order.orderId, total).then((orders) => {
+                             res.status(201).json({ status: true, order: orders })
+                        })
+                    } else if (payment === "Wallet") {
+                        let walletamt = await wallet.findOne({userId:order.userId})
+                        console.log(walletamt);
+                        if( order.totalPrice <= walletamt.Balance  ){
+                            let checkoutdata = await Order.insertMany([order])
+                            let walletamt = await wallet.findOneAndUpdate({userId:order.userId},{
+                                $set:{userId:checkoutdata[0].userId},
+                                $inc:{Balance:-checkoutdata[0].totalPrice},
+                            })
+                            walletamt.transactions.push({
+                                orderId:checkoutdata[0]._id,
+                                amount:checkoutdata[0].totalPrice,
+                                Date:new Date().toLocaleString(),
+                                paymentType:'Debit'
+                            })
+                            walletamt.save()
+                             res.status(203).json({ status: true,order:checkoutdata[0]._id })
+                        }else {
+                             res.status(208).json({status:true})
+                        }
+                    }
+                    
                 }
             }
             
-
-            userAddress = userAddress.userAddress[0]
-
-            const order = {
-                paymentId: (payment === 'Wallet') ? 'Wallet' : 'COD',
-                orderId: Orderid,
-                AddressId: userAddress,
-                products: productData,
-                totalPrice: cartTotal,
-                userId: new mongoose.Types.ObjectId(user),
-                payment: payment,
-                couponData: couponDetails
-            }
-
-            if (payment === "COD") {
-                await Order.insertMany([order])
-                return res.status(200).json({ status: true, order })
-            } else if (payment === "Bank Transfer") {
-                console.log(payment);
-                req.session.order = order
-                let total = order.totalPrice * 100
-                generateOrder(order.orderId, total).then((orders) => {
-                    res.status(201).json({ status: true, order: orders })
-                })
-            } else if (payment === "Wallet") {
-                let walletamt = await wallet.findOne({userId:order.userId})
-                console.log(walletamt);
-                if( order.totalPrice <= walletamt.Balance  ){
-                    let checkoutdata = await Order.insertMany([order])
-                    let walletamt = await wallet.findOneAndUpdate({userId:order.userId},{
-                        $set:{userId:checkoutdata[0].userId},
-                        $inc:{Balance:-checkoutdata[0].totalPrice},
-                    })
-                    walletamt.transactions.push({
-                        orderId:checkoutdata[0]._id,
-                        amount:checkoutdata[0].totalPrice,
-                        Date:new Date().toLocaleString(),
-                        paymentType:'Debit'
-                    })
-                    walletamt.save()
-                    res.status(203).json({ status: true,order:checkoutdata[0]._id })
-                }else{
-                    res.status(208).json({status:true})
-                }
-                
-            }
-
         }
     } catch (error) {
         console.log(error);

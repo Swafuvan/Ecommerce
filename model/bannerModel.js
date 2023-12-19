@@ -12,11 +12,8 @@ const bannerSchema =new mongoose.Schema({
     publish:{
         type: Boolean,
         default:false
-    },
-    Links:{
-        type:String,
-        default:'http://localhost:5000/shop'
     }
+   
 })
 
 const banner = mongoose.model('banner',bannerSchema)

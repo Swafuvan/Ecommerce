@@ -5,7 +5,7 @@
     <div class="page-header breadcrumb-wrap">
         <div class="container">
             <div class="breadcrumb">
-                <a href="index.html" rel="nofollow">Home</a>
+                <a href="/" rel="nofollow">Home</a>
                 <span></span> Pages
                 <span></span> Contact us
             </div>
@@ -19,10 +19,9 @@
                     <h1 class="mb-20 wow fadeIn animated font-xxl fw-900">
                         Let's Talk About <br>Your <span class="text-style-1">Idea</span>
                     </h1>
-                    <p class="w-50 m-auto mb-50 wow fadeIn animated">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum quam eius placeat, a quidem mollitia at accusantium reprehenderit pariatur provident nam ratione incidunt magnam sequi.</p>
+                    <h4 class="w-50 m-auto mb-50 wow fadeIn animated">If you guys have any ideas or something tell us you can contact with us.</h4>
                     <p class="wow fadeIn animated">
-                        <a class="btn btn-brand btn-lg font-weight-bold text-white border-radius-5 btn-shadow-brand hover-up" href="page-about.html">About Us</a>
-                        <a class="btn btn-outline btn-lg btn-brand-outline font-weight-bold text-brand bg-white text-hover-white ml-15 border-radius-5 btn-shadow-brand hover-up">Support Center</a>
+                        
                     </p>
                 </div>
             </div>
@@ -30,30 +29,15 @@
     </section>
     <section class="section-border pt-50 pb-50">
         <div class="container">
-            <div id='map-panes' class="leaflet-map mb-50"></div>
+            <div><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.3820833194886!2d75.93255597422635!3d10.782020189367064!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7bb05319d9e01%3A0x359e700e26450e53!2sScholar%20College!5e0!3m2!1sen!2sin!4v1702962941690!5m2!1sen!2sin" width="1100" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div><br>
             <div class="row">
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <h4 class="mb-15 text-brand">Office</h4>
-                    205 North Michigan Avenue, Suite 810<br>
-                    Chicago, 60601, USA<br>
-                    <abbr title="Phone">Phone:</abbr> (123) 456-7890<br>
-                    <abbr title="Email">Email: </abbr>contact@Evara.com<br>
-                    <a class="btn btn-outline btn-sm btn-brand-outline font-weight-bold text-brand bg-white text-hover-white mt-20 border-radius-5 btn-shadow-brand hover-up"><i class="fi-rs-marker mr-10"></i>View map</a>
-                </div>
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <h4 class="mb-15 text-brand">Studio</h4>
-                    205 North Michigan Avenue, Suite 810<br>
-                    Chicago, 60601, USA<br>
-                    <abbr title="Phone">Phone:</abbr> (123) 456-7890<br>
-                    <abbr title="Email">Email: </abbr>contact@Evara.com<br>
-                    <a class="btn btn-outline btn-sm btn-brand-outline font-weight-bold text-brand bg-white text-hover-white mt-20 border-radius-5 btn-shadow-brand hover-up"><i class="fi-rs-marker mr-10"></i>View map</a>
-                </div>
+                
                 <div class="col-md-4">
-                    <h4 class="mb-15 text-brand">Shop</h4>
-                    205 North Michigan Avenue, Suite 810<br>
-                    Chicago, 60601, USA<br>
-                    <abbr title="Phone">Phone:</abbr> (123) 456-7890<br>
-                    <abbr title="Email">Email: </abbr>contact@Evara.com<br>
+                    <h4 class="mb-15 text-brand">Shop:Colours Pardha Palace</h4>
+                    Chanthappadi,Ponnani PO 679577,<br>
+                    Malappuram,Kerala, India<br>
+                    <abbr title="Phone">Phone:</abbr>(+91)7510112675<br>
+                    <abbr title="Email">Email: </abbr>swafuvancp@Gmail.com<br>
                     <a class="btn btn-outline btn-sm btn-brand-outline font-weight-bold text-brand bg-white text-hover-white mt-20 border-radius-5 btn-shadow-brand hover-up"> <i class="fi-rs-marker mr-10"></i> View map</a>
                 </div>
             </div>
@@ -65,32 +49,41 @@
                 <div class="col-xl-8 col-lg-10 m-auto">
                     <div class="contact-from-area padding-20-row-col wow FadeInUp">
                         <h3 class="mb-10 text-center">Drop Us a Line</h3>
-                        <p class="text-muted mb-30 text-center font-sm">Lorem ipsum dolor sit amet consectetur.</p>
-                        <form class="contact-form-style text-center" id="contact-form" action="#" method="post">
+                        <p class="text-muted mb-30 text-center font-sm">What about you think to us.you have to tell us.</p>
+                        <form class="contact-form-style text-center" id="contact-form" action="/contact" method="post" onsubmit="return validation()">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6">
                                     <div class="input-style mb-20">
-                                        <input name="name" placeholder="First Name" type="text">
+                                        <input name="name" id="names" placeholder="Your Name" type="text">
+                                        <span class="text-danger" id="nameerr"></span>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                     <div class="input-style mb-20">
-                                        <input name="email" placeholder="Your Email" type="email">
+                                        <input name="email" id="emails" placeholder="Your Email" type="email">
+                                        <span class="text-danger" id="emailerr"></span>
+
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                     <div class="input-style mb-20">
-                                        <input name="telephone" placeholder="Your Phone" type="tel">
+                                        <input name="phone" id="phones" placeholder="Your Phone" type="tel">
+                                        <span class="text-danger" id="phoneerr"></span>
+
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                     <div class="input-style mb-20">
-                                        <input name="subject" placeholder="Subject" type="text">
+                                        <input name="subject" id="subject" placeholder="Subject" type="text">
+                                        <span class="text-danger" id="subjerr"></span>
+
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-md-12">
                                     <div class="textarea-style mb-30">
-                                        <textarea name="message" placeholder="Message"></textarea>
+                                        <textarea name="message" id="messages" placeholder="Message"></textarea>
+                                        <span class="text-danger" id="messageerr"></span>
+
                                     </div>
                                     <button class="submit submit-auto-width" type="submit">Send message</button>
                                 </div>
@@ -104,4 +97,67 @@
     </section>
 </main>
 
+
 <%- include('footer') %>
+<script>
+    function validation(){
+        let valid =true
+        let nameInput= document.getElementById('names').value
+        let emailInput= document.getElementById('emails').value
+        let phoneInput= document.getElementById('phones').value
+        let subjectInput= document.getElementById('subject').value
+        let messageInput= document.getElementById('messages').value
+
+        let namemessage= document.getElementById('nameerr')
+        let emailmessage= document.getElementById('emailerr')
+        let phonemessage= document.getElementById('phoneerr')
+        let subjectmessage= document.getElementById('subjerr')
+        let messagemessg= document.getElementById('messageerr')
+
+        if(!nameInput.trim()){
+            namemessage.innerHTML= 'Please Enter a name'
+            valid=false
+        }else if(nameInput>=20){
+            namemessage.innerHTML= 'Entered name is too Long'
+            valid=false
+        }
+
+        if(!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(emailInput)){
+            emailmessage.innerHTML= 'Please Enter a proper Email'
+            valid=false
+        }
+        if(!/^\d{10}$/.test(phoneInput)){
+            phonemessage.innerHTML= 'Please Enter a proper phone number'
+            valid=false
+        }
+        if(!subjectInput.trim()){
+            subjectmessage.innerHTML= 'Please Enter a subject for Contact'
+            valid=false
+        }
+        if(!messageInput.trim()){
+            messagemessg.innerHTML= 'Please Enter a message for Contact'
+            valid=false
+        }else if(messageInput>=40){
+            messagemessg.innerHTML= 'Entered message is too long contact us'
+            valid=false
+        }
+
+        return valid
+
+    }
+    document.getElementById('names').addEventListener('input', function () {
+        document.getElementById('nameerr').textContent = '';
+    });
+    document.getElementById('emails').addEventListener('input', function () {
+        document.getElementById('emailerr').textContent = '';
+    });
+    document.getElementById('phones').addEventListener('input', function () {
+        document.getElementById('phoneerr').textContent = '';
+    });
+    document.getElementById('subject').addEventListener('input', function () {
+        document.getElementById('subjerr').textContent = '';
+    });
+    document.getElementById('messages').addEventListener('input', function () {
+        document.getElementById('messageerr').textContent = '';
+    });
+</script>

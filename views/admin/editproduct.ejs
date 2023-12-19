@@ -262,6 +262,7 @@
             const priceinput = document.getElementById('productprice').value
             const qntyinput = document.getElementById('productquantity').value
             const offerinput = document.getElementById('productoffer').value
+            const typeOfinput = document.getElementById('offerType').value
 
             const nameMessage = document.getElementById('nameerr');
             const colormessage = document.getElementById('colorerr');
@@ -324,14 +325,26 @@
                 descmessage.textContent = 'Please enter a product description greater than ten letter.';
                 check = false;
             }
-
-            if (!offerinput.trim()) {
-                offermessage.textContent = 'Please add a product offer.';
-                check = false
-
+            if (typeOfinput == 'percentage' || typeOfinput == 'price') {
+                const numericValue = parseInt(offerinput);
+                alert(numericValue)
+                if (isNaN(numericValue)) {
+                    offermessage.textContent = 'Please enter a valid numeric value.';
+                    check = false;
+                } else {
+                    if (typeOfinput == 'percentage' && numericValue < 0 || numericValue > 50) {
+                        offermessage.textContent = 'Enter a percentage between 0 and 50.';
+                        check = false;
+                    } else if (typeOfinput == 'price' && (numericValue < 0 || numericValue > 500)) {
+                        offermessage.textContent = 'Enter a price between 0 and 500.';
+                        check = false;
+                    } else {
+                        offermessage.textContent = '';
+                    }
+                }
+            } else {
+                offerMessage.textContent = '';
             }
-
-
             return check
         }
         document.getElementById('producttitle').addEventListener('input', function () {

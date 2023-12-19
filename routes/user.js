@@ -7,6 +7,7 @@ const checkout = require('../controller/checkout_controllers');
 const whishlist = require('../controller/whishlistController');
 const paymentCheck = require('../Middleware/checkoutpage');
 const { userAuth } = require('../Middleware/Auth');
+const { userimg } = require('../controller/multer');
 
 
 
@@ -23,8 +24,9 @@ router.get('/auth/google',user.googlelogin);
 
 router.get('/auth/google/callback',user.googleLoginsuccess);
 
-router.get('/googleSuccess',user.googleloginsuccess)
+router.get('/googleSuccess',user.googleloginsuccess);
 
+router.post('/addUserimage',userimg.single('userimg'),user.changeUserimage);
 
 router.get('/signup', user.signuppage);
 
@@ -58,7 +60,9 @@ router.post('/changePassword', user.passwordchange);
 
 router.get('/contact',user.contactpage);
 
-router.get('/wallet',user.walletpage)
+router.post('/contact',user.contactpostpage);
+
+router.get('/wallet',user.walletpage);
 
 router.get('/logout', user.logout);
 
@@ -68,8 +72,6 @@ router.get('/logout', user.logout);
 router.get('/productview', product.productsview);
 
 router.get('/generateInvoice',user.userinvoices);
-
-router.post('/productReview',product.reviewForproduct)
 
 router.get('/pagination',user.paginationData)
 

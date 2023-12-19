@@ -46,15 +46,17 @@ const usercart = async (req, res, next) => {
                 return true
             }
         })
-
+        console.log(cartdata);
         const array = totalProductPrice(cartdata)
         let total = getTotal(array)
+        console.log(total);
         req.session.totalcart = total
-        if (cartdata) {
-            console.log(cartdata);
-            res.render('users/cart', { cartdata, userdata, data, array, total })
+        if (cartdata.length > 0) {
+            await cart.findByIdAndUpdate(cartdata[0]._id, { $set: { totalPrice: total } })
+            return res.render('users/cart', { cartdata, userdata, data, array, total })
         } else {
-            res.render('users/cart', { cartdata, userdata, data, total })
+            await cart.findOneAndUpdate({userid: userdata},{$set:{totalPrice:total}})
+            return res.render('users/cart', { cartdata, userdata, data, total })
         }
     } else {
         res.redirect('/login')
@@ -152,8 +154,8 @@ const Quantitychanging = async (req, res, next) => {
             console.log(array);
             let total = getTotal(array)
             let result = {
-                total:total,
-                price:price,
+                total: total,
+                price: price,
                 base: productData.price
             }
             res.status(code).json(result)
@@ -192,7 +194,7 @@ const Quantitydecrease = async (req, res, next) => {
                 }
             })
             cartdetails.save()
-            console.log(price,'wgef uwefjomwerfjiewrhfuryg');
+            console.log(price, 'wgef uwefjomwerfjiewrhfuryg');
             console.log(cartdetails);
             const userdata = req.session.user._id
             let cartdata = await cart.findOne({ userid: userdata });

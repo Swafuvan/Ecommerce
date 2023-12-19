@@ -9899,6 +9899,7 @@ span.fi-rs-apps {
   .header-bottom-bg-color {
     padding: 3px 0;
   }
+  
   .header-height-2 {
     min-height: 40px;
   }
@@ -9915,10 +9916,47 @@ span.fi-rs-apps {
   .entry-meta .hit-count, .entry-meta.meta-2 .font-xs {
     display: none;
   }
+  
   .deal {
     padding: 30px;
   }
 }
 .zoomContainer{ z-index: 9999;}
 .zoomWindow{ z-index: 9999;}
+
+@media only screen and (min-width: 990px) {
+  .loginimg {
+    display: block; 
+  }
+  .signupdiv{
+    margin-left: 300px;
+  }
+  #dfj {
+    display: block; 
+  }
+}
+
+@media only screen and (max-width:680px){
+  .signupdiv{
+    margin-right: 0px;
+  }
+}
+
+@media only screen and (min-width: 680px) and (max-width: 989px){
+  .signupdiv{
+    margin-left: 100px;
+  }
+}
+
+@media only screen and (max-width: 989px) {
+  .loginimg {
+    display: none;
+    overflow-x: hidden;
+  }
+  
+  #dfj{
+    display: none;
+    overflow-x: hidden;
+  }
+}
 /*# sourceMappingURL=main.css.map */

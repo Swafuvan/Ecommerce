@@ -38,7 +38,10 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: new Date()
     },
-    Image: String,
+    Image: {
+        type: String,
+        
+    },
     coupon:[],
 });
 

@@ -3,14 +3,14 @@
 
 <section class="content-main">
     <div class="row">
-        <form action="/admin/addBanner" method="post" enctype="multipart/form-data" onsubmit="return validation()">
+        <form action="/admin/addBanner" method="post" enctype="multipart/form-data" >
             <div class="col-9">
                 <div class="content-header">
                     <h2 class="content-title">Add New Banner</h2>
                     <div>
-                        <button type="submit" onclick=""
+                        <button type="submit" onclick="return validation()"
                             class="btn btn-light rounded font-sm mr-5  hover-up">Unpublish</button>
-                        <button type="submit" onclick=""
+                        <button type="submit" onclick="return validation()"
                             class="btn btn-md rounded font-sm  hover-up">Publish</button>
                     </div>
                 </div>
@@ -64,15 +64,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <div >
-                            <label class="form-label" for="expiryDate">Product/products</label>
-                            <input type="text" id="links" name="links" placeholder="http://localhost:5000/shop" class="form-control">
-                            <span id="linkerr" style="color: red;"></span>
-                        </div>
-                    </div>
-                </div>
+                
                 
             </div>
             
@@ -90,44 +82,49 @@
             const startinput = document.getElementById('startDate').value
             const expiryinput = document.getElementById('ExpiryDate').value
             const imagesinput = document.getElementById('images').files
-            const linkinput = document.getElementById('links').value
 
             const descmessage = document.getElementById('descerr');
             const namemessage = document.getElementById('nameerr');
             const imgmessage = document.getElementById('imgerr');
             const stratmessage = document.getElementById('starterr');
             const expirymessage = document.getElementById('expireerr');
-            const Linkmessage = document.getElementById('linkerr');
 
             namemessage.textContent = '';
             descmessage.textContent = '';
             imgmessage.textContent = '';
             stratmessage.textContent = '';
             expirymessage.textContent = '';
-            Linkmessage.textContent = '';
-
+      
             if(!nameInput.trim()){
-                namemessage.innerHTML = 'Please Enter the Banner Name'
+                namemessage.textContent = 'Please Enter the Banner Name'
                 check= false
             }
             if(!descinput.trim()){
-                descmessage.innerHTML= 'Please Enter the Description for Banner'
+                descmessage.textContent= 'Please Enter the Description for Banner'
                 check =false
             }
-            if(!stratmessage.trim()){
-                stratmessage.innerHTML= 'Please Enter the Starting Date for Banner'
+            if(!startinput.trim()){
+                stratmessage.textContent= 'Please Enter the Starting Date for Banner'
+                check =false
+            }else if(!startinput){
+                stratmessage.textContent= 'Please Enter the Starting Date for Banner'
                 check =false
             }
+            
             if(!expiryinput.trim()){
-                expirymessage.innerHTML= 'Please Enter the Expiry Date for Banner'
+                expirymessage.textContent= 'Please Enter the Expiry Date for Banner'
+                check =false
+            }else if(!expiryinput){
+                expirymessage.textContent= 'Please Enter the Expiry Date for Banner'
                 check =false
             }
             if(imagesinput.length<=0){
-                imgmessage.innerHTML= 'Please Add the Image for Banner'
+                imgmessage.textContent= 'Please Add the Image for Banner'
                 check =false
             }
             
             return check
+          
     }
                 document.getElementById('Name').addEventListener('input', function () {
                     document.getElementById('nameerr').textContent = '';
@@ -135,6 +132,16 @@
                 document.getElementById('description').addEventListener('input', function () {
                     document.getElementById('descerr').textContent = '';
                 });
+                document.getElementById('startDate').addEventListener('input', function () {
+                    document.getElementById('starterr').textContent = '';
+                });
+                document.getElementById('ExpiryDate').addEventListener('input', function () {
+                    document.getElementById('expireerr').textContent = '';
+                });
+                document.getElementById('images').addEventListener('input', function () {
+                    document.getElementById('imgerr').textContent = '';
+                });
+                
    
    
 </script>

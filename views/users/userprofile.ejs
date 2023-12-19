@@ -55,14 +55,17 @@
                                             <div class="card-header d-flex">
                                                 <div style="width: 30%;" class="float-left">
                                                     <img style=" width: 120px;" class="img-fluid rounded"
-                                                        src="/images/WhatsApp Image 2023-07-24 at 00.35.40.jpg"
-                                                        alt="image">
-                                                    <a data-bs-toggle="modal" data-bs-target="#exampleModal12"
-                                                        style="margin-left: 10px; border: none; border-radius: 15%; background-color: darkgray; padding: 5px;"
-                                                        class="btn">
-                                                        <i class="fa-solid fa-user-pen"></i>Edit profile
-                                                    </a>
+                                                        src="/userimage/<%= userdata?.Image %>"
+                                                        alt="image" >
+                                                      <form action="/addUserimage" enctype="multipart/form-data" method="post">
+                                                        <label >
+                                                            <i class="fa-solid fa-circle-plus"></i>
+                                                            <input type="file" accept="image/*" onchange="userimage()" name="userimg" hidden>
+                                                        </label>
+                                                        <button id="userimgdiv" type="submit" style="display: none;" class="btn">Add</button>
+                                                      </form>
                                                 </div>
+
                                                 <div style="width: 70%;" class="float-left ">
                                                     <h5 class="mb-0 ">
                                                         <%= userdata?.username %>
@@ -76,6 +79,11 @@
                                                         <%= userdata?.phone %>
                                                     </h5>
                                                     <br>
+                                                    <a data-bs-toggle="modal" data-bs-target="#exampleModal12"
+                                                        style="margin-left: 10px; "
+                                                        class="btn">
+                                                        <i class="fa-solid fa-user-pen"></i>Edit profile
+                                                    </a>
                                                     <button class="btn " id="changePassword">Change
                                                         Password</button>
                                                 </div>
@@ -702,12 +710,6 @@
                         </label>
 
                         <label>
-                            <span> Profile Picture <span class="required">*</span></span>
-                            <input type="file" name="usrimage" id="usrimage" value="<%= userdata.phone %>" placeholder="profile Picture">
-                            <span class="text-danger" id="proimgerr"></span>
-                        </label>
-
-                        <label>
                             <span> Phone <span class="required">*</span></span>
                             <input type="tel" name="phone" id="prophone" value="<%= userdata.phone %>" placeholder="phone">
                             <span class="text-danger" id="prophoneerr"></span>
@@ -729,6 +731,10 @@
     <%- include('footer') %>
 
         <script>
+
+            async function userimage(){
+                document.getElementById('userimgdiv').style.display ='block'  
+            }
 
             async function cancelOrder(orderid) {
 
