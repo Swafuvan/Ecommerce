@@ -688,9 +688,7 @@ async function walletpage(req, res, next) {
             if (walletdata) {
                 res.render('users/Wallet', { data, walletdata })
             } else {
-
                 const details = {
-
                     userId: new mongoose.Types.ObjectId(data._id),
                     Balance: 0,
                     transactions: []
@@ -702,7 +700,7 @@ async function walletpage(req, res, next) {
             res.redirect('/login')
         }
     } catch (error) {
-        console.log(error);
+        console.log(error)
         res.redirect('/error')
     }
 
@@ -741,6 +739,7 @@ async function googleLoginsuccess(req, res, next) {
         const tokens = tokenResponse.tokens;
         client.setCredentials(tokens);
         req.session.tokens = tokens;
+       
         res.redirect('/googleSuccess')
     } catch (error) {
         console.error('Error getting tokens:', error);
@@ -756,10 +755,12 @@ async function googleloginsuccess(req, res, next) {
             const userInfo = await google.oauth2('v2').userinfo.get({ auth: client });
             console.log(userInfo.data)
             if (req.session.GoogleFrom === 'LOGIN') {
+
                 let user = await userandadminModel.findOne({ email: userInfo.data.email })
 
                 if (user) {
                     if (await bcrypt.compare(userInfo.data.id, user.password)) {
+                        console.log(bcrypt.compare(userInfo.data.id, user.password));
                         req.session.user = user
                         res.redirect("/");
                     } else {
