@@ -760,13 +760,12 @@ async function googleloginsuccess(req, res, next) {
 
                 if (user) {
                     if (await bcrypt.compare(userInfo.data.id, user.password)) {
-                        console.log(bcrypt.compare(userInfo.data.id, user.password));
                         req.session.user = user
                         res.redirect("/");
                     } else {
                         req.session.tryLogin = true
                         res.redirect('/login')
-                    }
+                    } 
                 } else {
                     req.session.pleaseSignup = true
                     res.redirect('/login')
