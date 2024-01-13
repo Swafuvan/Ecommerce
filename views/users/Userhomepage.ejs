@@ -429,29 +429,17 @@
             <script>
                 async function modalcall(productid,userid) {
                     if(userid){
-                        let res = await Swal.fire({
-                            title: 'Are you sure?',
-                            text: "want to add this product to the Cart!",
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Yes, Added to Cart!'
-                        })
-                        if (res.isConfirmed) {
-                            const productcart = await fetch('/addedcart',{
-                            method:'POST',
-                            headers:{'Content-Type':'application/json'},
-                            body:JSON.stringify({userid,productid})
+                        const productcart = await fetch('/addedcart',{
+                        method:'POST',
+                        headers:{'Content-Type':'application/json'},
+                        body:JSON.stringify({userid,productid})
                         })
                         if(productcart.status===200){
-                            Swal.fire(
-                                'Added!',
-                                'Your product is Added to Cart.',
-                                'success'
-                            )}
-                        }
-                            
+                        Swal.fire(
+                            'Added!',
+                            'Your product is Added to Cart.',
+                            'success'
+                        )}
                     }else{
                         let result = await Swal.fire({
                             title: "Don't have an Account?",
